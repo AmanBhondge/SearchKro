@@ -1,8 +1,9 @@
 import React from 'react'
+import Sidebar from '../../Common-components/Sidebar/Sidebar'
 
 const LegalPolicy = () => {
   return (
-    <div>LegalPolicy</div>
+    <div><Sidebar /></div>
   )
 }
 

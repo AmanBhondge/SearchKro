@@ -1,8 +1,9 @@
 import React from 'react'
+import Sidebar from '../../Common-components/Sidebar/Sidebar'
 
 const MainDashboard = () => {
   return (
-    <div>MainDashboard</div>
+    <div><Sidebar /></div>
   )
 }
 

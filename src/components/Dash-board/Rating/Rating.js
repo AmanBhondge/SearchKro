@@ -1,8 +1,9 @@
 import React from 'react'
+import Sidebar from '../../Common-components/Sidebar/Sidebar'
 
 const Rating = () => {
   return (
-    <div>Rating</div>
+    <div><Sidebar /></div>
   )
 }
 

@@ -1,8 +1,9 @@
 import React from 'react'
+import Sidebar from '../../Common-components/Sidebar/Sidebar'
 
 const Location = () => {
   return (
-    <div>Location</div>
+    <div><Sidebar /></div>
   )
 }
 

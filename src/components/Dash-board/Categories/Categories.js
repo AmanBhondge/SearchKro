@@ -1,8 +1,9 @@
 import React from 'react'
+import Sidebar from '../../Common-components/Sidebar/Sidebar'
 
 const Categories = () => {
   return (
-    <div>Categories</div>
+    <div><Sidebar /></div>
   )
 }
 

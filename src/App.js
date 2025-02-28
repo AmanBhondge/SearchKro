@@ -10,12 +10,12 @@ import MainDashboard from './components/Dash-board/Main-dashboard/MainDashboard'
 const App = () => {
   return (
     <div>
-      <Navbar />
-      <Sidebar />
+      {/* <Navbar /> */}
+      {/* <Sidebar /> */}
       <Categories />
-      <LegalPolicy />
+      {/* <LegalPolicy />
       <Location />
-      <MainDashboard />
+      <MainDashboard /> */}
       
     </div>
   );
