@@ -9,12 +9,22 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import { FiLogOut } from "react-icons/fi";
 import { IoIosArrowBack } from "react-icons/io";
 import Logo from '../../../Assets/Logo.png';
+import Logout from "../Pop-ups/Logout";
 
 const Sidebar = () => {
   const location = useLocation();
   const [active, setActive] = useState("");
+  const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
+
+  const handleLogoutClick = () => {
+    setShowLogoutConfirmation(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    console.log("User confirmed logout");
+    setShowLogoutConfirmation(false);
+  };
   
-  // Update active state based on current path when component mounts or location changes
   useEffect(() => {
     const path = location.pathname;
     if (path.includes('dashboard')) setActive('Dashboard');
@@ -23,7 +33,7 @@ const Sidebar = () => {
     else if (path.includes('policy')) setActive('Legal Policy');
     else if (path.includes('location')) setActive('Location');
     else if (path.includes('rating')) setActive('Rating');
-    else setActive('Dashboard'); // Default to Dashboard if path doesn't match
+    else setActive('Dashboard');
   }, [location]);
 
   const menuItems = [
@@ -60,10 +70,16 @@ const Sidebar = () => {
          </Link>
         ))}
       </nav>
-      <div className="mt-auto w-[192px] h-[48px] bg-[#474747] rounded-lg cursor-pointer flex items-center space-x-3 text-[#D9D9D9] hover:text-white">
+      <button onClick={handleLogoutClick} className="mb-[165px] w-[192px] h-[48px] bg-[#474747] rounded-lg cursor-pointer flex items-center space-x-3 text-[#D9D9D9] hover:text-white">
         <FiLogOut className="w-5 h-5 ml-6" />
         <span style={{fontWeight:"700", lineHeight:"24px"}} className="text-[16px]">Logout</span>
-      </div>
+      </button>
+      
+      <Logout
+        isOpen={showLogoutConfirmation}
+        onClose={() => setShowLogoutConfirmation(false)}
+        onConfirm={handleLogoutConfirm}
+      />
     </div>
   );
 };

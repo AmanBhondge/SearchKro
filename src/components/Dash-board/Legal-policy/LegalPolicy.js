@@ -22,30 +22,28 @@ const LegalPolicy = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
+    <div className="flex h-screen bg-[#F4F7FF94]">
+    <div className="w-60 bg-black text-white">
       <Sidebar />
-
-      {/* Main Content */}
-      <div className="flex-1 p-8 w-[937px] h-[651px] overflow-auto">
-      
+    </div>
+    
+    <div className="flex-1 overflow-auto p-8">
+      <div className="flex justify-between items-center p-4 border-b">
+        <h1 className="text-[32px] font-bold ml-10">Legal Policy</h1>
         
-<div className="flex justify-between items-center">
-        {/* Page Title */}
-        <h1 className="text-2xl font-semibold mt-4">Legal Policy</h1>
-
-        <Navbar />
-        </div>
-
+        <Navbar/>
+      </div>
+      
+      <div className="p-8">
         {/* FAQ Section */}
-        <div className="mt-6 h-['64px'] w-[937px] ">
+        <div className="mt-6 h-['64px'] w-[937px]  ">
           {faqs.map((faq, index) => (
             <div key={index} className="mb-2">
               {index === activeIndex ? (
-                <div className="bg-black text-white p-4 rounded-lg flex justify-between items-center ">
+                <div className="bg-black text-white p-4 rounded-lg flex justify-between items-center  ">
                   <div>
-                    <p className="font-bold">{faq.question}</p>
-                    <p className="text-sm">{faq.answer}</p>
+                    <p className="font-bold text-[20px]">{faq.question}</p>
+                    <p className="text-[17px]">{faq.answer}</p>
                   </div>
                   <X
                     className="cursor-pointer"
@@ -54,7 +52,7 @@ const LegalPolicy = () => {
                 </div>
               ) : (
                 <button
-                  className="w-full bg-gray-200 text-left p-4 rounded-lg flex justify-between items-center"
+                  className="w-full text-[20px] bg-gray-200 text-left p-4 rounded-[10px] flex justify-between items-center"
                   onClick={() => setActiveIndex(index)}
                 >
                   {faq.question}
@@ -66,7 +64,8 @@ const LegalPolicy = () => {
         </div>
       </div>
     </div>
-  );
+  </div>
+  );    
 };
 
 export default LegalPolicy;

@@ -3,6 +3,7 @@ import Object from "../../../Assets/Object.png";
 import close from "../../../Assets/Close Square.png";
 
 const Logout = ({ isOpen, onClose, onConfirm }) => {
+  
   useEffect(() => {
 
     if (isOpen) {
@@ -13,6 +14,7 @@ const Logout = ({ isOpen, onClose, onConfirm }) => {
     
     return () => {
       document.body.style.overflow = 'unset';
+    
     };
   }, [isOpen]);
 

@@ -1,6 +1,7 @@
 import React from "react";
 import Logo from "../../../Assets/Google.png"
 import GroupImage from "../../../Assets/Group.png";
+import { Link } from "react-router-dom";
 
 const CreateAccount = () => {
   return (
@@ -35,23 +36,25 @@ const CreateAccount = () => {
               />
             </div>
 
+            <Link to="/">
             <button
               type="submit"
               className="w-[400px] h-[60px] text-[17px] p-3 bg-cyan-500 text-white rounded-xl hover:bg-cyan-600 transition-colors"
             >
               Create account
             </button>
+            </Link>
           </form>
 
           <div className="mt-4 text-sm text-gray-600">
             Already have an account?
-            <a href="" className="text-black ml-1 rounded-xl underline">
+            <a href="" className="text-black ml-1 font-medium rounded-xl underline">
               Log in
             </a>
           </div>
 
-          <div className="mt-4 w-[400px]">
-            <button className="w-[400px] h-[60px] p-3  text-[17px] font-500 border  border-black rounded-xl flex justify-center items-center space-x-2 hover:bg-gray-50 ">
+          <div className=" mt-4 w-[400px]">
+            <button className="w-[400px] h-[60px] p-3  text-[17px] font-medium border  border-black rounded-xl flex justify-center items-center space-x-2 hover:bg-gray-50 ">
                            <img src={Logo} />
               
               <span>Sign up with Google</span>
@@ -59,8 +62,8 @@ const CreateAccount = () => {
           </div>
         </div>
 
-        <div className=" ml-40 items-center justify-center p-8">
-            <div className="  flex items-center justify-center ">
+        <div className=" ml-40 mt-10  items-center justify-center p-8">
+            <div className="  mt-10 flex items-center justify-center ">
               <img
                 src={GroupImage}
                 alt="Group"
