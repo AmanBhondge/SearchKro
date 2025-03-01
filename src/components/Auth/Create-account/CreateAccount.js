@@ -39,7 +39,7 @@ const CreateAccount = () => {
           <Link to="/">
             <button
               type="submit"
-              className="w-[400px] h-[60px] text-[17px] p-3 bg-cyan-500 text-white rounded-xl hover:bg-cyan-600 transition-colors"
+              className="mt-4 w-[400px] h-[60px] text-[17px] p-3 bg-cyan-500 text-white rounded-xl hover:bg-cyan-600 transition-colors"
             >
               Create account
             </button>

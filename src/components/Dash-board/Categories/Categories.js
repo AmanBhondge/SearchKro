@@ -13,51 +13,55 @@ const Categories = () => {
   ];
 
   return (
-    <div className="flex w-full bg-[#F4F7FF94] relative">
-      <Sidebar />
-
-      <div className="p-6 flex-1 overflow-hidden w-[1440px] h-[900px] flex flex-col">
-      <div className="flex justify-between items-center p-4 border-b">
-        <h1 className="text-[32px] font-bold ml-10">Categories</h1>
-        
-        <Navbar/>
+    <div className="flex h-screen bg-[#F4F7FF94]">
+      <div className="w-60 bg-black text-white">
+        <Sidebar />
       </div>
-        <div className="bg-white shadow-lg rounded-lg h-[643px] w-[1063px] p-6 absolute top-[154px] left-[317px]">
-          <div className="border-b border-black pb-4 mb-4">
-            <h2 className="text-[23px] font-bold">Categories</h2>
-          </div>
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="bg-white text-black border-b text-[21px]">
-                <th className="text-left py-4 px-6 font-bold">S.no.</th>
-                <th className="text-left py-4 px-6 font-bold">Role</th>
-                <th className="text-left py-4 px-6 font-bold">Categories</th>
-                <th className="text-left py-4 px-6 font-bold">Product</th>
-                <th className="text-left py-4 px-6 font-bold">Popular</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categoryData.map((item) => (
-                <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50 transition-all text-[21px] font-weight:800">
-                  <td className="py-4 px-6">{item.id}</td>
-                  <td className="py-4 px-6">{item.role}</td>
-                  <td className="py-4 px-6">{item.category}</td>
-                  <td className="py-4 px-6">{item.product}</td>
-                  <td className="py-4 px-6">
-                    {item.popular === "Positive" ? (
-                      <span className="bg-green-100 font-weight:800 text-green-600 w-[119px] h-[39px] py-1 rounded-full inline-flex items-center justify-center">
-                        Positive <span className="ml-1">↑</span>
-                      </span>
-                    ) : (
-                      <span className="bg-red-100 font-weight:800 text-red-600 w-[119px] h-[39px] py-1 rounded-full inline-flex items-center justify-center">
-                        Negative <span className="ml-1">↓</span>
-                      </span>
-                    )}
-                  </td>
+
+      <div className="flex-1 overflow-auto p-8">
+        <div className="flex justify-between items-center p-4 border-b">
+          <h1 className="text-[32px] font-bold ml-10">Categories</h1>
+          
+          <Navbar/>
+        </div>
+        <div className="p-8">
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <div className="border-b border-black pb-4 mb-4">
+              <h2 className="text-[23px] font-bold">Categories</h2>
+            </div>
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-white text-black border-b text-[21px]">
+                  <th className="text-left py-4 px-6 font-bold">S.no.</th>
+                  <th className="text-left py-4 px-6 font-bold">Role</th>
+                  <th className="text-left py-4 px-6 font-bold">Categories</th>
+                  <th className="text-left py-4 px-6 font-bold">Product</th>
+                  <th className="text-left py-4 px-6 font-bold">Popular</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {categoryData.map((item) => (
+                  <tr key={item.id} className="border-b border-gray-200 hover:bg-gray-50 transition-all text-[21px] font-weight:800">
+                    <td className="py-4 px-6">{item.id}</td>
+                    <td className="py-4 px-6">{item.role}</td>
+                    <td className="py-4 px-6">{item.category}</td>
+                    <td className="py-4 px-6">{item.product}</td>
+                    <td className="py-4 px-6">
+                      {item.popular === "Positive" ? (
+                        <span className="bg-green-100 font-weight:800 text-green-600 w-[119px] h-[39px] py-1 rounded-full inline-flex items-center justify-center">
+                          Positive <span className="ml-1">↑</span>
+                        </span>
+                      ) : (
+                        <span className="bg-red-100 font-weight:800 text-red-600 w-[119px] h-[39px] py-1 rounded-full inline-flex items-center justify-center">
+                          Negative <span className="ml-1">↓</span>
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
