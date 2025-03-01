@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Sidebar from '../../Common-components/Sidebar/Sidebar';
 import DashCategories from './Dashboard-components/DashCategories';
@@ -16,14 +15,14 @@ const MainDashboard = () => {
       <div className="w-60 bg-black text-white">
         <Sidebar />
       </div>
-      
+
       <div className="flex-1 overflow-auto p-8">
         <div className="flex justify-between items-center p-4 border-b">
           <h1 className="text-[32px] font-bold ml-10">Dashboard</h1>
-          
-          <Navbar/>
+
+          <Navbar />
         </div>
-        
+
         <div className="p-8">
           <div className="flex flex-col mb-8 md:flex-row justify-between items-center">
             <div className="">
@@ -33,7 +32,7 @@ const MainDashboard = () => {
               <DashLocation />
             </div>
           </div>
-          
+
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div >
               <DashLegalPolicy />

@@ -22,8 +22,6 @@ const Categories = () => {
         
         <Navbar/>
       </div>
-
-
         <div className="bg-white shadow-lg rounded-lg h-[643px] w-[1063px] p-6 absolute top-[154px] left-[317px]">
           <div className="border-b border-black pb-4 mb-4">
             <h2 className="text-[23px] font-bold">Categories</h2>

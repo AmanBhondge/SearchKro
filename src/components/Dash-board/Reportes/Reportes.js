@@ -3,7 +3,6 @@ import Sidebar from "../../Common-components/Sidebar/Sidebar";
 import Navbar from "../../Common-components/Navbar/Navbar";
 
 const Reportes = () => {
-  // Define your data as an array of objects
   const reportSections = [
     {
       id: 1,

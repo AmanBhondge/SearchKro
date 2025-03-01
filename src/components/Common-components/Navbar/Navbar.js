@@ -13,10 +13,8 @@ const Navbar = () => {
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
   const dropdownRef = useRef(null);
   const profileBtnRef = useRef(null);
-
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const notificationButtonRef = useRef(null);
-
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -63,9 +61,6 @@ const Navbar = () => {
   return (
 
     <>
-
-   
-        
         <div className="flex items-center space-x-4">
 
           <div className="relative">
@@ -137,7 +132,6 @@ const Navbar = () => {
           </div>
         </div>
       
-
     <Notification 
           isOpen={isNotificationOpen} 
           onClose={closeNotification} 

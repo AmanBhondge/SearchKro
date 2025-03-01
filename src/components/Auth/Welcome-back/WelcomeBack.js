@@ -54,12 +54,12 @@ const WelcomeBack = () => {
                     </div>
 
                     <Link to="/main-dashboard">
-                    <button
-                        type="submit"
-                        className="w-[400px] h-[60px] text-[17px] p-3 bg-cyan-400  text-white rounded-xl hover:bg-cyan-600 transition"
-                    >
-                        Log in
-                    </button>
+                        <button
+                            type="submit"
+                            className="w-[400px] h-[60px] text-[17px] p-3 bg-cyan-400  text-white rounded-xl hover:bg-cyan-600 transition"
+                        >
+                            Log in
+                        </button>
                     </Link>
 
                     <div className="text-left text-sm text-gray-600">
