@@ -40,10 +40,10 @@ const LegalPolicy = () => {
           {faqs.map((faq, index) => (
             <div key={index} className="mb-2">
               {index === activeIndex ? (
-                <div className="bg-black text-white p-4 rounded-lg flex justify-between items-center  ">
+                <div className="bg-black text-white p-4 rounded-lg flex justify-between   ">
                   <div>
-                    <p className="font-bold text-[20px]">{faq.question}</p>
-                    <p className="text-[17px]">{faq.answer}</p>
+                    <p className="font-bold text-[20px] w-[792px]">{faq.question}</p>
+                    <p className="text-[17px] w-[792px]">{faq.answer}</p>
                   </div>
                   <X
                     className="cursor-pointer"
