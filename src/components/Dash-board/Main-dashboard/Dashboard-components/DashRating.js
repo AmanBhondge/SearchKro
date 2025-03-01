@@ -31,7 +31,6 @@ const DashRating = () => {
               stroke="#52C93F"
               strokeWidth="5"
               strokeDasharray={`${positivePercentage}, 100`}
-              strokeLinecap="round"
             />
           </svg>
           
@@ -45,7 +44,6 @@ const DashRating = () => {
               stroke="#FF2727"
               strokeWidth="5"
               strokeDasharray={`${negativePercentage}, 100`}
-              strokeLinecap="round"
               strokeDashoffset={`-${positivePercentage}`}
             />
           </svg>

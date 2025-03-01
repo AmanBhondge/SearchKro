@@ -41,7 +41,7 @@ const Logout = ({ isOpen, onClose, onConfirm }) => {
             <img src={Object} />
           </div>
 
-          <h2 className="text-2xl font-bold text-center mb-2">You are Logged Out?</h2>
+          <h2 className="text-2xl text-black font-bold text-center mb-2">You are Logged Out?</h2>
           <p className="text-center text-black mb-4 px-12">
             You are about to logout in 3 secs, Do you want to continue?
           </p>
