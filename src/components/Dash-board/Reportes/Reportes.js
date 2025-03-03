@@ -3,7 +3,6 @@ import Sidebar from "../../Common-components/Sidebar/Sidebar";
 import Navbar from "../../Common-components/Navbar/Navbar";
 
 const Reportes = () => {
-
   const reportSections = [
     {
       id: 1,
@@ -26,18 +25,11 @@ const Reportes = () => {
   ];
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
-      {/* Sidebar  */}
-      <div
-        className="md:block md:static fixed z-20 top-0 left-0 h-full bg-white transition-all duration-300"
-      >
+    <div className="flex flex-col md:flex-row h-screen bg-[#F4F7FF94]">
+      <div className="md:block md:static fixed z-20 top-0 left-0 h-full bg-white transition-all duration-300">
         <Sidebar />
       </div>
-
-      {/* Main Content */}
-      <div
-        className={`flex-1 flex flex-col overflow-hidden bg-[#F4F7FF] transition-all duration-300 `}
-      >
+      <div className="flex-1 flex flex-col overflow-hidden bg-[#F4F7FF94] transition-all duration-300 ">
         <div className="flex mt-0 md:mt-8 justify-between items-center border-b-2 px-4 md:px-8 py-4">
           <div className="flex items-center">
             <h1
