@@ -43,7 +43,7 @@ const LegalPolicy = () => {
           <div className="flex items-center 2xl:px-12">
             <h1
               style={{ fontWeight: "700" }}
-              className="text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl ml-9 sm:ml-0 "
+              className="text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl ml-9"
             >
               Legal Policy
             </h1>
