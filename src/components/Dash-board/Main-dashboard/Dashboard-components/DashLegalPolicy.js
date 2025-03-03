@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { IoIosArrowForward } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from 'react-router-dom';
+
 const DashLegalPolicy = () => {
-  
   const [openItem, setOpenItem] = useState(0);
 
-  
   const faqItems = [
     {
       question: "How do I book a service?",
@@ -22,29 +21,31 @@ const DashLegalPolicy = () => {
     }
   ];
 
-
   const toggleItem = (index) => {
     setOpenItem(openItem === index ? null : index);
   };
 
- 
   return (
-    <div className="w-full h-full rounded-lg bg-white px-3 py-0 flex flex-col justify-start items-center">
-      <div className="flex justify-between items-center w-full lg:w-[350px] h-[58px] border-b-2 mb-4">
+    <div className="w-full h-full rounded-lg bg-white px-3 py-4 flex flex-col justify-start items-center">
+      <div className="flex justify-between items-center w-full border-b-2 mb-4 pb-2">
         <h2 className="text-[18px] font-bold text-[#1A1919] ml-2">Legal policy</h2>
-        <Link to="/legal-policy"><button className="bg-[#191919] text-white w-[60px] h-[24px] rounded-sm text-[12px] font-semibold">View</button></Link>
+        <Link to="/legal-policy">
+          <button className="bg-[#191919] text-white w-[60px] h-[24px] rounded-sm text-[12px] font-semibold">
+            View
+          </button>
+        </Link>
       </div>
 
-      <div className="">
+      <div className="w-full">
         {faqItems.map((item, index) => (
           <div 
             key={index} 
-            className={`rounded-md transition-all w-auto lg:w-[350px] mb-4 flex flex-col justify-center items-start ${
-              openItem === index ? "bg-[#191919] text-white h-[112px]" : "bg-[#E1E1E1] text-gray-800 h-[61px]"
+            className={`rounded-md transition-all w-full mb-4 flex flex-col justify-center items-start ${
+              openItem === index ? "bg-[#191919] text-white p-4" : "bg-[#E1E1E1] text-gray-800 p-3"
             }`}
           >
             <div 
-              className="flex justify-between items-center cursor-pointer w-full px-3"
+              className="flex justify-between items-center cursor-pointer w-full"
               onClick={() => toggleItem(index)}
             >
               <h3 className="text-[17px] font-bold">{item.question}</h3>
@@ -54,7 +55,7 @@ const DashLegalPolicy = () => {
             </div>
             
             {openItem === index && (
-              <div className='w-auto lg:w-[308px] ml-3 flex justify-start items-center'>
+              <div className='w-full mt-2'>
                 <p className='text-[13px] font-light'>{item.answer}</p>
               </div>
             )}
