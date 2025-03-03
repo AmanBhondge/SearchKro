@@ -98,7 +98,7 @@ const Sidebar = () => {
       )}
       
       <div 
-        className={`h-screen bg-[#191919] text-white flex flex-col p-4 transition-all duration-300 ${
+        className={`h-screen bg-[#191919] text-white flex flex-col p-4 transition-all duration-300 ease-in-out ${
           isMobile 
             ? isOpen ? 'translate-x-0' : '-translate-x-full' 
             : collapsed ? 'w-[80px]' : 'w-[240px]'
@@ -111,16 +111,16 @@ const Sidebar = () => {
           )}
           <div onClick={toggleSidebar}>
             {isMobile ? (
-              <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 relative left-[2px] top-[-41px] flex items-center justify-center border-white text-center">
-                 <RxCross2 />
+              <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 relative left-[2px] top-[-41px] flex items-center justify-center border-white text-center transition-transform duration-900">
+                <RxCross2 />
               </button>
             ) : (
               collapsed ? (
-                <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border relative left-[5px] flex items-center justify-center border-white text-center">
+                <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border relative left-[5px] flex items-center justify-center border-white text-center transition-transform duration-900">
                   <IoIosArrowForward />
                 </button>
               ) : (
-                <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border relative left-[28px] flex items-center justify-center border-white text-center">
+                <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border relative left-[28px] flex items-center justify-center border-white text-center transition-transform duration-900">
                   <IoIosArrowBack />
                 </button>
               )
