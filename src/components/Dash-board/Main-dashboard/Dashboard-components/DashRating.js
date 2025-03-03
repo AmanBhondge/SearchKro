@@ -3,7 +3,7 @@ import Chart from 'chart.js/auto';
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 
-const RatingChart = () => {
+const DashRating = () => {
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -58,22 +58,22 @@ const RatingChart = () => {
   }, []);
 
   return (
-    <div className="w-full h-full rounded-lg bg-white px-3 py-0 flex flex-col justify-start items-center">
-      <div className="flex justify-between items-center w-full lg:w-[268px] h-[58px] mb-4">
-        <h2 style={{ fontWeight: "700" }} className="text-[20px]">Rating</h2>
+    <div className="w-full h-full rounded-lg bg-white px-3 py-4 flex flex-col justify-start items-center">
+      <div className="flex justify-between items-center w-full border-b-2 mb-4 pb-2">
+        <h2 style={{ fontWeight: "700" }} className="text-[20px] ml-2">Rating</h2>
         <Link to="/rating">
           <button className="bg-[#191919] text-white w-[60px] h-[24px] rounded-sm text-[12px] font-semibold">View</button>
         </Link>
       </div>
       
-      <div className="w-auto lg:w-[244px] h-auto lg:h-[240px]">
+      <div className="w-full">
         <div className="flex justify-center">
-          <div className="relative w-auto lg:w-[160px] h-auto lg:h-[160px]">
+          <div className="relative w-40 h-40 md:w-48 md:h-48 lg:w-40 lg:h-40 xl:w-48 xl:h-48">
             <canvas ref={chartRef}></canvas>
           </div>
         </div>
         
-        <div className="space-y-2 mt-[8px]">
+        <div className="space-y-2 mt-4 max-w-sm mx-auto">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="w-6 h-6 rounded-full bg-[#52C93F] mr-3"></div>
@@ -101,4 +101,4 @@ const RatingChart = () => {
   );
 };
 
-export default RatingChart;
+export default DashRating;
