@@ -29,8 +29,8 @@ const DashLegalPolicy = () => {
 
  
   return (
-    <div className="w-[387px] h-[360px] rounded-lg bg-white px-3 py-0 flex flex-col justify-start items-center">
-      <div className="flex justify-between items-center w-[350px] h-[58px] border-b-2 mb-4">
+    <div className="w-full h-full rounded-lg bg-white px-3 py-0 flex flex-col justify-start items-center">
+      <div className="flex justify-between items-center w-full lg:w-[350px] h-[58px] border-b-2 mb-4">
         <h2 className="text-[18px] font-bold text-[#1A1919] ml-2">Legal policy</h2>
         <Link to="/legal-policy"><button className="bg-[#191919] text-white w-[60px] h-[24px] rounded-sm text-[12px] font-semibold">View</button></Link>
       </div>
@@ -39,7 +39,7 @@ const DashLegalPolicy = () => {
         {faqItems.map((item, index) => (
           <div 
             key={index} 
-            className={`rounded-md transition-all w-[350px] mb-4 flex flex-col justify-center items-start ${
+            className={`rounded-md transition-all w-auto lg:w-[350px] mb-4 flex flex-col justify-center items-start ${
               openItem === index ? "bg-[#191919] text-white h-[112px]" : "bg-[#E1E1E1] text-gray-800 h-[61px]"
             }`}
           >
@@ -54,7 +54,7 @@ const DashLegalPolicy = () => {
             </div>
             
             {openItem === index && (
-              <div className='w-[308px] ml-3 flex justify-start items-center'>
+              <div className='w-auto lg:w-[308px] ml-3 flex justify-start items-center'>
                 <p className='text-[13px] font-light'>{item.answer}</p>
               </div>
             )}

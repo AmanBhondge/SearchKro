@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 const DashReport = () => {
   return (
-    <div className="w-[331px] h-[360px] rounded-lg bg-white px-3 py-0 flex flex-col justify-start items-center">
-      <div className="flex justify-between items-center w-[304px] h-[58px] border-b-2 mb-4">
+    <div className="w-full h-full rounded-lg bg-white px-3 py-0 flex flex-col justify-start items-center">
+      <div className="flex justify-between items-center w-full lg:w-[304px] h-[58px] border-b-2 mb-4">
         <h2 className="text-[18px] font-bold text-[#1A1919] ml-2">Reports</h2>
         <Link to="/reportes"><button className="bg-[#191919] text-white w-[60px] h-[24px] rounded-sm text-[12px] font-semibold">View</button></Link>
       </div>

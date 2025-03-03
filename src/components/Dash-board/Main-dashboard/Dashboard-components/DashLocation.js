@@ -9,7 +9,7 @@ const DashLocation = () => {
   ];
 
   return (
-    <div className="w-[515px] h-[273px] bg-white px-3 py-0 shadow-md rounded-md">
+    <div className="w-full h-full bg-white px-3 py-0 shadow-md rounded-md">
       {/* Header */}
       <div className="flex justify-between items-center h-[59px] border-b-2 mb-3">
         <h2 style={{ fontWeight: "700" }} className="text-[20px] leading-[24px]">Location</h2>
