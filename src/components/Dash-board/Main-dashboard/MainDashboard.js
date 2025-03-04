@@ -16,7 +16,7 @@ const MainDashboard = () => {
       </div>
       <div className="flex-1 flex flex-col overflow-hidden bg-[#F4F7FF94] transition-all duration-300">
         <div className="flex mt-0 md:mt-8 justify-between items-center border-b-2 px-4 md:px-8 py-4">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl font-bold ml-9 sm:ml-0">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl font-bold ml-9">
             Dashboard
           </h1>
           <Navbar />
@@ -26,7 +26,7 @@ const MainDashboard = () => {
             <DashCategories className="w-full" />
             <DashLocation className="w-full" />
           </div>
-          <div className="kunal grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3  gap-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3  gap-6 mt-6">
             <DashLegalPolicy className="w-full" />
             <DashReport className="w-full" />
             <DashRating className="w-full" />
