@@ -50,9 +50,9 @@ const Categories = () => {
         <div className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
           <div className="bg-white shadow-lg rounded-lg p-4 md:p-6 w-full">
             <div className="border-b border-black pb-3 md:pb-4 mb-4">
-              <h2 className="text-lg sm:text-xl md:text-2xl 2xl:text-3xl font-bold">
+              <h1 className="text-lg sm:text-xl md:text-2xl 2xl:text-3xl font-bold ml-8">
                 Categories
-              </h2>
+              </h1>
             </div>
 
             {/* Responsive Table */}
