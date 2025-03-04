@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import img2 from "../../../Assets/Reset.png";
-import arrow from "../../../Assets/arrow.png"
+import arrow from "../../../Assets/arrow.png";
 
 const PasswordReset = () => {
   const navigate = useNavigate();
@@ -12,41 +12,81 @@ const PasswordReset = () => {
   };
 
   return (
-    <div className="relative w-[1440px] h-[900px] bg-[#FFFFFF] mx-auto flex items-center justify-center">
-      <div className="absolute w-[400px] h-[294px] top-[128px] left-[160px] gap-[25px] p-8 rounded-md">
-        <h1 className="text-[50px] w-[600px] font-semibold leading-[68.2px]  text-gray-900 mb-16">Create New Password</h1>
-        <p className="text-gray-600 mb-2 mt-4  text-lg">
-          create password
-        </p>
-        <form onSubmit={handleSubmit}>
-
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-[400px] h-[60px] mt-[10px] mr-[20px] mb-[10px] gap-20 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-
-          <button
-            type="submit"
-            className="w-[400px] h-[65px]  mt-[25px] bg-[#06C4D9] text-white font-semibold p-3 rounded-lg transition"
-          >             Submit
-          </button>
-        </form>
+    <div className="relative w-full min-h-screen bg-white mx-auto max-w-screen-2xl">
+   
+      <div className="flex justify-center items-center min-h-screen lg:hidden px-4 sm:px-6 py-8">
+        <div className="w-full max-w-md mx-auto flex flex-col items-center">
+          <h1 className="text-2xl sm:text-4xl font-semibold leading-tight text-gray-900 mb-8 sm:mb-12 text-center">Create New Password</h1>
+          <p className="w-full font-['Nunito_Sans'] text-base sm:text-lg text-gray-600 mb-2 text-center">
+            create password
+          </p>
+          <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
+            <input
+              type="password"
+              placeholder="Password"
+              className="w-full h-12 sm:h-14 mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              className="w-full h-14 mt-5 sm:mt-6 bg-[#06C4D9] text-white font-semibold p-3 rounded-lg transition hover:bg-[#05b0c3]"
+            >
+              Submit
+            </button>
+          </form>
+          
+          <div className="mt-8 sm:mt-10 self-start">
+            <button
+              className="hover:text-gray-700 flex items-center"
+              onClick={() => navigate("/forgot-password")}
+            >
+              <img src={arrow} alt='arrow' className="w-5 h-5 sm:w-6 sm:h-6" />
+              <span className="font-medium text-base sm:text-lg text-black ml-1">Back</span>
+            </button>
+          </div>
+        </div>
       </div>
+      
+  
+      <div className="hidden lg:block w-full h-screen">
+        <div className="flex h-full">
+         
+          <div className="w-1/2 flex items-center justify-center p-8">
+            <div className="max-w-lg">
+              <h1 className="text-4xl xl:text-5xl font-semibold leading-tight text-gray-900 mb-12">Create New Password</h1>
+              <p className="text-lg text-gray-600 mb-2 mt-4">
+                create password
+              </p>
+              <form onSubmit={handleSubmit} className="w-full max-w-md">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="w-full h-14 mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="submit"
+                  className="w-full h-16 mt-6 bg-[#06C4D9] text-white font-semibold p-3 rounded-lg transition hover:bg-[#05b0c3]"
+                >
+                  Submit
+                </button>
+              </form>
+              
+              <div className="mt-10 lg:mt-[300px]">
+                <button
+                  className="hover:text-gray-700 flex items-center"
+                  onClick={() => navigate("/forgot-password")}
+                >
+                  <img src={arrow} alt='arrow' className="w-6 h-6" />
+                  <span className="font-medium text-lg text-black ml-1">Back</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
 
-      <button
-        className="absolute w-[66px] h-[24px] top-[780px] left-[160px] text-gray-500 hover:text-gray-700 flex items-center"
-        onClick={() => navigate("/forgot-password")}
-      >
-        <img src={arrow} alt='arrow' className="w-[24px] h-[24px]" />  <span style={{ fontWeight: "500" }} className='text-[17px] text-black leading-[23.19px]'>Back</span>
-      </button>
-
-      <div className="absolute w-[562.72px] h-[502.67px] top-[198px] left-[751.53px]">
-        <img
-          src={img2}
-          alt="Create Password Illustration"
-          className="w-full h-full object-contain"
-        />
+          <div className="w-1/2 flex items-center justify-center p-8">
+            <img src={img2} alt="Password Reset Illustration" className="max-w-full max-h-full object-contain" />
+          </div>
+        </div>
       </div>
     </div>
   );
