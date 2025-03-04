@@ -40,10 +40,9 @@ const LegalPolicy = () => {
         className={`flex-1 flex flex-col overflow-hidden bg-[#F4F7FF] transition-all duration-300 `}
       >
         <div className="flex mt-0 md:mt-8 justify-between items-center border-b-2 px-4 md:px-8 py-4">
-          <div className="flex items-center 2xl:px-12">
+          <div className="flex items-center ">
             <h1
-              style={{ fontWeight: "700" }}
-              className="text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl ml-9"
+              className="text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl font-bold ml-9"
             >
               Legal Policy
             </h1>

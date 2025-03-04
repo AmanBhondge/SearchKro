@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TbCategory2 } from "react-icons/tb";
 import { RxDashboard } from "react-icons/rx";
 import { IoIosStarOutline } from "react-icons/io";
@@ -15,36 +15,32 @@ import { RxCross2 } from "react-icons/rx";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const [collapsed, setCollapsed] = useState(location.state?.sidebarCollapsed || false);
   const [active, setActive] = useState("");
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
-  // Handle responsive behavior
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      
-      // Close sidebar on mobile by default
+
       if (mobile && isOpen) {
         setIsOpen(false);
       }
-      
-      // Always show sidebar on desktop/tablet
+
       if (!mobile) {
         setIsOpen(true);
       }
     };
 
-    // Set initial state
     handleResize();
 
-    // Add event listener
     window.addEventListener('resize', handleResize);
-    
-    // Cleanup
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -53,7 +49,7 @@ const Sidebar = () => {
   };
 
   const handleLogoutConfirm = () => {
-    console.log("User confirmed logout");
+    console.log("User  confirmed logout");
     setShowLogoutConfirmation(false);
   };
 
@@ -85,83 +81,86 @@ const Sidebar = () => {
     { name: 'Rating', icon: <IoIosStarOutline size={22} />, navigate: '/rating' }
   ];
 
+  const transitionDuration = "duration-500";
+  const transitionTiming = "ease-in-out";
+
+  const handleNavigation = (path, itemName) => {
+    setActive(itemName);
+
+    if (isMobile) {
+      setIsOpen(false);
+    }
+
+    navigate(path, { state: { sidebarCollapsed: collapsed } });
+  };
+
   return (
     <>
-      {/* Mobile toggle button that appears when sidebar is hidden */}
       {isMobile && !isOpen && (
-        <button 
+        <button
           onClick={toggleSidebar}
           className="fixed top-4 left-4 z-50 text-black cursor-pointer w-8 h-8 flex items-center justify-center text-center"
         >
           <GiHamburgerMenu />
         </button>
       )}
-      
-      <div 
-        className={`h-screen bg-[#191919] text-white flex flex-col p-4 transition-all duration-300 ease-in-out ${
-          isMobile 
-            ? isOpen ? 'translate-x-0' : '-translate-x-full' 
-            : collapsed ? 'w-[80px]' : 'w-[240px]'
-        } ${isMobile ? 'fixed left-0 top-0 z-40' : ''}`}
+
+      <div
+        className={`h-screen bg-[#191919] text-white flex flex-col p-4 transition-all ${transitionDuration} ${transitionTiming} ${isMobile
+            ? isOpen ? 'translate-x-0' : '-translate-x-full'
+            : collapsed ? 'w-[82px] 2xl:w-[100px]' : 'w-[240px] 2xl:w-[300px]'
+          } ${isMobile ? 'fixed left-0 top-0 z-40' : ''}`}
       >
-        <div className="mt-[40px] flex items-center gap-[4px] ml-[11px]">
-          <img src={Logo} alt="Logo" className="w-[45px] h-[34.13px]" />
-          {(!collapsed || isMobile) && (
-            <span style={{ fontWeight: "700" }} className="text-[26px]">Searchkro</span>
-          )}
-          <div onClick={toggleSidebar}>
+        <div className="mt-[40px] flex items-center gap-[4px] ml-[11px] relative">
+          <img src={Logo} alt="Logo" className="w-[45px] 2xl:w-[50px] h-[34.13px] 2xl:h-[38px]" />
+          <div className={`transition-all ${transitionDuration} ${transitionTiming} ${collapsed && !isMobile ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+            {(!collapsed || isMobile) && (
+              <span style={{ fontWeight: "700" }} className="text-[26px] 2xl:text-[35px]">Searchkro</span>
+            )}
+          </div>
+          <div onClick={toggleSidebar} className={`transition-all ${transitionDuration} ${transitionTiming} absolute ${collapsed ? 'left-[42px] 2xl:left-[55px]' : 'left-[200px] 2xl:left-[260px]'
+            }`}>
             {isMobile ? (
-              <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 relative left-[2px] top-[-41px] flex items-center justify-center border-white text-center transition-transform duration-900">
-                <RxCross2 />
-              </button>
+              <></>
             ) : (
-              collapsed ? (
-                <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border relative left-[5px] flex items-center justify-center border-white text-center transition-transform duration-900">
-                  <IoIosArrowForward />
-                </button>
-              ) : (
-                <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border relative left-[28px] flex items-center justify-center border-white text-center transition-transform duration-900">
-                  <IoIosArrowBack />
-                </button>
-              )
+              <button className={`text-white cursor-pointer bg-[#191919] rounded-full w-6 2xl:w-[30px] h-6 2xl:h-[30px] border flex items-center justify-center border-white text-center transition-all ${transitionDuration} ${transitionTiming}`} >
+                {collapsed ? <IoIosArrowForward /> : <IoIosArrowBack />}
+              </button>
             )}
           </div>
         </div>
         <nav className="flex-1 mt-6">
           {menuItems.map((item) => (
-            <Link to={item.navigate} key={item.name}>
-              <div
-                className={`flex items-center ${!isMobile && collapsed ? 'justify-center' : 'space-x-3'} ${
-                  !isMobile && collapsed ? 'w-[48px]' : 'w-[192px]'
-                } h-[48px] rounded-[4px] cursor-pointer transition-colors ${
-                  active === item.name ? "bg-[#06C4D9] text-white ease-out duration-300" : "text-[#D9D9D9]"
+            <div
+              key={item.name}
+              className={`flex items-center ${!isMobile && collapsed ? 'justify-center' : 'space-x-3'} ${!isMobile && collapsed ? 'w-[48px] 2xl:w-[55px]' : 'w-[192px] 2xl:w-[260px]'
+                } h-[48px] 2xl:h-[55px] rounded-[4px] cursor-pointer transition-all ${transitionDuration} ${transitionTiming} ${active === item.name ? "bg-[#06C4D9] text-white" : "text-[#D9D9D9]"
                 }`}
-                onClick={() => {
-                  setActive(item.name);
-                  if (isMobile) setIsOpen(false);
-                }}
-              >
-                {active === item.name && (!isMobile && !collapsed) && <span className="w-[6px] h-[36px] rounded-md bg-white" />}
-                <div className={`${active === item.name && (!isMobile && !collapsed) ? "ml-1 text-white" : (!isMobile && collapsed) ? "mx-auto" : "ml-2 text-[#D9D9D9]"}`}>
-                  {item.icon}
-                </div>
+              onClick={() => handleNavigation(item.navigate, item.name)}
+            >
+              {active === item.name && (!isMobile && !collapsed) && <span className={`w-[6px] 2xl:w-[8px] h-[36px] 2xl:h-[40px] rounded-md bg-white transition-all ${transitionDuration} ${transitionTiming}`} />}
+              <div className={`transition-all ${transitionDuration} ${transitionTiming} ${active === item.name && (!isMobile && !collapsed) ? "ml-1 text-white" : (!isMobile && collapsed) ? "mx-auto" : "ml-2 text-[#D9D9D9]"}`}>
+                {item.icon}
+              </div>
+              <div className={`transition-all ${transitionDuration} ${transitionTiming} ${(!isMobile && collapsed) ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
                 {((!isMobile && !collapsed) || isMobile) && (
-                  <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] text-white">{item.name}</span>
+                  <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] 2xl:text-[20px] text-white">{item.name}</span>
                 )}
               </div>
-            </Link>
+            </div>
           ))}
         </nav>
-        <button 
-          onClick={handleLogoutClick} 
-          className={`mb-[165px] ${
-            !isMobile && collapsed ? 'w-[48px] justify-center' : 'w-[192px] space-x-3'
-          } h-[48px] bg-[#474747] rounded-lg cursor-pointer flex items-center text-[#D9D9D9] hover:text-white`}
+        <button
+          onClick={handleLogoutClick}
+          className={`mb-auto lg:mb-[165px] transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && collapsed ? 'w-[48px] 2xl:w-[55px] justify-center' : 'w-[192px] 2xl:w-[260px] space-x-3'
+            } h-[48px] 2xl:h-[55px] bg-[#474747] rounded-lg cursor-pointer flex items-center text-[#D9D9D9] hover:text-white`}
         >
-          <FiLogOut className={`w-5 h-5 ${!isMobile && !collapsed || isMobile ? 'ml-6' : ''}`} />
-          {((!isMobile && !collapsed) || isMobile) && (
-            <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] text-white">Logout</span>
-          )}
+          <FiLogOut className={`w-5 h-5 transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && !collapsed || isMobile ? 'ml-6' : ''}`} />
+          <div className={`transition-all ${transitionDuration} ${transitionTiming} ${(!isMobile && collapsed) ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+            {((!isMobile && !collapsed) || isMobile) && (
+              <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] 2xl:text-[20px] text-white">Logout</span>
+            )}
+          </div>
         </button>
 
         <Logout
@@ -170,10 +169,9 @@ const Sidebar = () => {
           onConfirm={handleLogoutConfirm}
         />
       </div>
-      
-      {/* Overlay to close sidebar when clicking outside on mobile */}
+
       {isMobile && isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30"
           onClick={() => setIsOpen(false)}
         />
