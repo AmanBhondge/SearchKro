@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { TbCategory2 } from "react-icons/tb";
 import { RxDashboard } from "react-icons/rx";
 import { IoIosStarOutline } from "react-icons/io";
@@ -15,9 +15,12 @@ import { RxCross2 } from "react-icons/rx";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Extract the collapsed state from the router's state, if available
+  const [collapsed, setCollapsed] = useState(location.state?.sidebarCollapsed || false);
   const [active, setActive] = useState("");
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
 
@@ -85,6 +88,23 @@ const Sidebar = () => {
     { name: 'Rating', icon: <IoIosStarOutline size={22} />, navigate: '/rating' }
   ];
 
+  // Define the common transition duration for consistent animations
+  const transitionDuration = "duration-500";
+  const transitionTiming = "ease-in-out";
+
+  // Custom navigation handler to preserve sidebar state
+  const handleNavigation = (path, itemName) => {
+    setActive(itemName);
+    
+    // Close sidebar on mobile when navigating
+    if (isMobile) {
+      setIsOpen(false);
+    }
+    
+    // Navigate to the new route while preserving the sidebar collapsed state
+    navigate(path, { state: { sidebarCollapsed: collapsed } });
+  };
+
   return (
     <>
       {/* Mobile toggle button that appears when sidebar is hidden */}
@@ -98,70 +118,68 @@ const Sidebar = () => {
       )}
       
       <div 
-        className={`h-screen bg-[#191919] text-white flex flex-col p-4 transition-all duration-300 ease-in-out ${
+        className={`h-screen bg-[#191919] text-white flex flex-col p-4 transition-all ${transitionDuration} ${transitionTiming} ${
           isMobile 
             ? isOpen ? 'translate-x-0' : '-translate-x-full' 
             : collapsed ? 'w-[80px]' : 'w-[240px]'
         } ${isMobile ? 'fixed left-0 top-0 z-40' : ''}`}
       >
-        <div className="mt-[40px] flex items-center gap-[4px] ml-[11px]">
+        <div className="mt-[40px] flex items-center gap-[4px] ml-[11px] relative">
           <img src={Logo} alt="Logo" className="w-[45px] h-[34.13px]" />
-          {(!collapsed || isMobile) && (
-            <span style={{ fontWeight: "700" }} className="text-[26px]">Searchkro</span>
-          )}
-          <div onClick={toggleSidebar}>
+          <div className={`transition-all ${transitionDuration} ${transitionTiming} ${collapsed && !isMobile ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+            {(!collapsed || isMobile) && (
+              <span style={{ fontWeight: "700" }} className="text-[26px]">Searchkro</span>
+            )}
+          </div>
+          <div onClick={toggleSidebar} className={`transition-all ${transitionDuration} ${transitionTiming} absolute ${
+            collapsed ? 'left-[42px]' : 'left-[200px]'
+          }`}>
             {isMobile ? (
-              <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 relative left-[2px] top-[-41px] flex items-center justify-center border-white text-center transition-transform duration-900">
+              <button className={`text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 relative flex items-center justify-center border-white text-center transition-all ${transitionDuration} ${transitionTiming}`}>
                 <RxCross2 />
               </button>
             ) : (
-              collapsed ? (
-                <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border relative left-[5px] flex items-center justify-center border-white text-center transition-transform duration-900">
-                  <IoIosArrowForward />
-                </button>
-              ) : (
-                <button className="text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border relative left-[28px] flex items-center justify-center border-white text-center transition-transform duration-900">
-                  <IoIosArrowBack />
-                </button>
-              )
+              <button className={`text-white cursor-pointer bg-[#191919] rounded-full w-6 h-6 border flex items-center justify-center border-white text-center transition-all ${transitionDuration} ${transitionTiming}`}>
+                {collapsed ? <IoIosArrowForward /> : <IoIosArrowBack />}
+              </button>
             )}
           </div>
         </div>
         <nav className="flex-1 mt-6">
           {menuItems.map((item) => (
-            <Link to={item.navigate} key={item.name}>
-              <div
-                className={`flex items-center ${!isMobile && collapsed ? 'justify-center' : 'space-x-3'} ${
-                  !isMobile && collapsed ? 'w-[48px]' : 'w-[192px]'
-                } h-[48px] rounded-[4px] cursor-pointer transition-colors ${
-                  active === item.name ? "bg-[#06C4D9] text-white ease-out duration-300" : "text-[#D9D9D9]"
-                }`}
-                onClick={() => {
-                  setActive(item.name);
-                  if (isMobile) setIsOpen(false);
-                }}
-              >
-                {active === item.name && (!isMobile && !collapsed) && <span className="w-[6px] h-[36px] rounded-md bg-white" />}
-                <div className={`${active === item.name && (!isMobile && !collapsed) ? "ml-1 text-white" : (!isMobile && collapsed) ? "mx-auto" : "ml-2 text-[#D9D9D9]"}`}>
-                  {item.icon}
-                </div>
+            <div
+              key={item.name}
+              className={`flex items-center ${!isMobile && collapsed ? 'justify-center' : 'space-x-3'} ${
+                !isMobile && collapsed ? 'w-[48px]' : 'w-[192px]'
+              } h-[48px] rounded-[4px] cursor-pointer transition-all ${transitionDuration} ${transitionTiming} ${
+                active === item.name ? "bg-[#06C4D9] text-white" : "text-[#D9D9D9]"
+              }`}
+              onClick={() => handleNavigation(item.navigate, item.name)}
+            >
+              {active === item.name && (!isMobile && !collapsed) && <span className={`w-[6px] h-[36px] rounded-md bg-white transition-all ${transitionDuration} ${transitionTiming}`} />}
+              <div className={`transition-all ${transitionDuration} ${transitionTiming} ${active === item.name && (!isMobile && !collapsed) ? "ml-1 text-white" : (!isMobile && collapsed) ? "mx-auto" : "ml-2 text-[#D9D9D9]"}`}>
+                {item.icon}
+              </div>
+              <div className={`transition-all ${transitionDuration} ${transitionTiming} ${(!isMobile && collapsed) ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
                 {((!isMobile && !collapsed) || isMobile) && (
                   <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] text-white">{item.name}</span>
                 )}
               </div>
-            </Link>
+            </div>
           ))}
         </nav>
         <button 
           onClick={handleLogoutClick} 
-          className={`mb-[165px] ${
+          className={`mb-[165px] transition-all ${transitionDuration} ${transitionTiming} ${
             !isMobile && collapsed ? 'w-[48px] justify-center' : 'w-[192px] space-x-3'
           } h-[48px] bg-[#474747] rounded-lg cursor-pointer flex items-center text-[#D9D9D9] hover:text-white`}
         >
-          <FiLogOut className={`w-5 h-5 ${!isMobile && !collapsed || isMobile ? 'ml-6' : ''}`} />
-          {((!isMobile && !collapsed) || isMobile) && (
-            <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] text-white">Logout</span>
-          )}
+          <FiLogOut className={`w-5 h-5 transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && !collapsed || isMobile ? 'ml-6' : ''}`} />
+          <div className={`transition-all ${transitionDuration} ${transitionTiming} ${(!isMobile && collapsed) ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+            {((!isMobile && !collapsed) || isMobile) && (
+              <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] text-white">Logout</span>
+            )}
+          </div>
         </button>
 
         <Logout
