@@ -1,93 +1,119 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import img from "../../../Assets/Frameok.png";
-import Logo from "../../../Assets/Google.png"
-import { Link } from "react-router-dom";
-const WelcomeBack = () => {
-    const [isLogin, setIsLogin] = useState(true);
+import Logo from "../../../Assets/Google.png";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../Auth-provider/AuthProvider";
 
-    const toggleForm = () => {
-        setIsLogin(!isLogin);
+const WelcomeBack = () => {
+    const { loginUser } = useContext(AuthContext);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const response = loginUser(email, password);
+
+        if (response.success) {
+            navigate("/main-dashboard");
+        } else {
+            setErrorMessage(response.message);
+        }
     };
 
     return (
-        <div className="w-[1440px] h-[900px] flex items-center justify-center  p-4">
-            <div className=" flex items-center justify-center p-8">
-                <div className=" mt-10 relative">
-                    <div className="flex items-center  mt-10 justify-center ">
+        <div className="min-h-screen w-full flex flex-col lg:flex-row items-center justify-center p-4 md:p-6 xl:p-10 2xl:p-16">
+            {/* Image container - visible on large screens */}
+            <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-4 xl:p-10 2xl:p-16">
+                <div className="relative">
+                    <div className="flex items-center justify-center">
                         <img
                             src={img}
                             alt="Group"
-                            className="w-[566.91px] h-[503.93px]"
+                            className="w-full max-w-xl xl:max-w-2xl 2xl:max-w-3xl object-contain"
                         />
                     </div>
-
-                    <div className="absolute bottom-0 right-0"></div>
                 </div>
             </div>
-            <div className="w-[400px] h-[479px] flex flex-col ml-40 justify-center">
-                <h1 className="text-[50px]  mb-6"> Welcome back</h1>
 
-                <form className="space-y-6">
+            {/* Form container - centered on mobile and tablet */}
+            <div className="w-full lg:w-1/2 max-w-md xl:max-w-lg 2xl:max-w-xl mx-auto px-4 py-8 flex flex-col items-center lg:items-start">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl 2xl:text-6xl font-bold mb-6 text-center lg:text-left">
+                    Welcome back
+                </h1>
+
+                <form className="space-y-6 w-full" onSubmit={handleLogin}>
                     <div>
                         <input
                             type="email"
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email"
-                            className="w-[400px] h-[60px] text-[17px] p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                            className="w-full h-12 md:h-14 2xl:h-16 text-base md:text-lg 2xl:text-xl p-3 md:p-4 2xl:p-5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            required
                         />
                     </div>
 
                     <div>
                         <input
                             type="password"
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
-                            className="w-[400px] h-[60px] text-[17px] p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                            className="w-full h-12 md:h-14 2xl:h-16 text-base md:text-lg 2xl:text-xl p-3 md:p-4 2xl:p-5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            required
                         />
                     </div>
 
+                    {errorMessage && (
+                        <p className="text-red-500 text-sm md:text-base 2xl:text-lg mb-4">
+                            {errorMessage}
+                        </p>
+                    )}
+
                     <div className="text-right">
-                        <Link
-                            to="/forgot-password">
-                            <button className="text-sm font-medium text-gray-600 underline">
+                        <Link to="/forgot-password">
+                            <button className="text-sm md:text-base 2xl:text-lg font-medium text-gray-600 underline"
+                                type="button">
                                 Forgot password?
                             </button>
                         </Link>
                     </div>
 
-                    <Link to="/main-dashboard">
-                        <button
-                            type="submit"
-                            className="w-[400px] h-[60px] text-[17px] p-3 bg-cyan-400  text-white rounded-xl hover:bg-cyan-600 transition"
-                        >
-                            Log in
-                        </button>
-                    </Link>
+                    <button
+                        type="submit"
+                        className="w-full h-12 md:h-14 2xl:h-16 text-base md:text-lg 2xl:text-xl p-3 bg-cyan-400 text-white rounded-xl hover:bg-cyan-600 transition"
+                    >
+                        Log in
+                    </button>
 
-                    <div className="text-left text-sm text-gray-600">
+                    <div className="text-center lg:text-left text-sm md:text-base 2xl:text-lg text-gray-600">
                         Don't have an account?
                         <Link to="/create-account">
                             <button
                                 type="button"
-                                onClick={toggleForm}
-                                className="ml-1 text-black text-u underline hover:underline"
+                                className="ml-1 text-black underline hover:underline"
                             >
                                 Sign up
-                            </button></Link>
+                            </button>
+                        </Link>
                     </div>
 
                     <div className="mt-6">
                         <button
                             type="button"
-                            className="w-[400px] h-[60px] p-3  text-[17px] font-medium border  border-black  rounded-xl   flex items-center justify-center space-x-2 hover:bg-gray-50 transition"
+                            className="w-full h-12 md:h-14 2xl:h-16 p-3 md:p-4 text-base md:text-lg 2xl:text-xl font-medium border border-black rounded-xl flex items-center justify-center space-x-2 hover:bg-gray-50 transition"
                         >
-                            <img src={Logo} />
+                            <img
+                                src={Logo}
+                                alt="Google logo"
+                                className="h-5 md:h-6 2xl:h-8"
+                            />
                             <span>Log in with Google</span>
                         </button>
                     </div>
-
                 </form>
             </div>
         </div>
-
     );
 };
 
