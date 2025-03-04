@@ -102,7 +102,7 @@ const Navbar = () => {
 
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg 2xl:text-4xl font-medium text-gray-900">
+                      <h3 className="text-lg 3xl:text-4xl font-medium text-gray-900">
                         John Doe
                       </h3>
                       <button className="p-1">
@@ -110,9 +110,9 @@ const Navbar = () => {
                       </button>
                     </div>
 
-                    <div className="mt-2 2xl:mt-6">
-                      <div className="p-1 px-2 2xl:px-6 border-[1px] border-[#D9D9D9] rounded flex items-center justify-between">
-                        <span className="text-sm 2xl:text-3xl pl-1 text-gray-800">
+                    <div className="mt-2 3xl:mt-6">
+                      <div className="p-1 px-2 3xl:px-6 border-[1px] border-[#D9D9D9] rounded flex items-center justify-between">
+                        <span className="text-sm 3xl:text-3xl pl-1 text-gray-800">
                           John Doe
                         </span>
                         <IoIosCheckmark className="w-6 3xl:w-12 3xl:h-12 h-6 bg-gray-100" />
@@ -124,7 +124,7 @@ const Navbar = () => {
 
               <div className="border-t border-[1px] border-[#D9D9D9] my-1"></div>
 
-              <div className="p-3 2xl:p-6">
+              <div className="p-3 3xl:p-6">
                 <button
                   onClick={handleLogoutClick}
                   className="flex items-center text-gray-800 font-medium"
@@ -133,7 +133,7 @@ const Navbar = () => {
                     src={logout}
                     className="w-6 3xl:w-12 3xl:h-12 h-6 text-black mr-4"
                   />
-                  <span className="2xl:text-4xl">Log out</span>
+                  <span className="3xl:text-4xl">Log out</span>
                 </button>
               </div>
             </div>
