@@ -13,9 +13,9 @@ const PasswordReset = () => {
 
   return (
     <div className="relative w-full min-h-screen bg-white mx-auto max-w-screen-2xl">
-   
+
       <div className="flex justify-center items-center min-h-screen lg:hidden px-4 sm:px-6 py-8">
-        <div className="w-full max-w-md mx-auto flex flex-col items-center">
+        <div className="w-full mx-auto flex flex-col items-center">
           <h1 className="text-2xl sm:text-4xl font-semibold leading-tight text-gray-900 mb-8 sm:mb-12 text-center">Create New Password</h1>
           <p className="w-full font-['Nunito_Sans'] text-base sm:text-lg text-gray-600 mb-2 text-center">
             create password
@@ -33,8 +33,8 @@ const PasswordReset = () => {
               Submit
             </button>
           </form>
-          
-          <div className="mt-8 sm:mt-10 self-start">
+
+          <div className="mt-[25%] self-start">
             <button
               className="hover:text-gray-700 flex items-center"
               onClick={() => navigate("/forgot-password")}
@@ -45,11 +45,10 @@ const PasswordReset = () => {
           </div>
         </div>
       </div>
-      
-  
+
       <div className="hidden lg:block w-full h-screen">
         <div className="flex h-full">
-         
+
           <div className="w-1/2 flex items-center justify-center p-8">
             <div className="max-w-lg">
               <h1 className="text-4xl xl:text-5xl font-semibold leading-tight text-gray-900 mb-12">Create New Password</h1>
@@ -69,7 +68,7 @@ const PasswordReset = () => {
                   Submit
                 </button>
               </form>
-              
+
               <div className="mt-10 lg:mt-[300px]">
                 <button
                   className="hover:text-gray-700 flex items-center"
@@ -81,7 +80,6 @@ const PasswordReset = () => {
               </div>
             </div>
           </div>
-          
 
           <div className="w-1/2 flex items-center justify-center p-8">
             <img src={img2} alt="Password Reset Illustration" className="max-w-full max-h-full object-contain" />
