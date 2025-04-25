@@ -1,29 +1,46 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../Auth-provider/AuthProvider";
+import React, { useState } from "react";
 import Logo from "../../../Assets/Google.png";
 import GroupImage from "../../../Assets/Group.png";
 import { Link, useNavigate } from "react-router-dom";
+import { signUpApi } from "../../utils/AxiosApi";
 
 const CreateAccount = () => {
-  const { registerUser } = useContext(AuthContext);
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [isAcceptTermConditions, setIsAcceptTermConditions] = useState(false);
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    const response = registerUser(name, email, password);
+    
+    if (!isAcceptTermConditions) {
+      setErrorMessage("Please accept the terms and conditions to continue");
+      return;
+    }
 
-    if (response.success) {
-      setSuccessMessage(response.message);
+    try {
+      const requestBody = {
+        emailPhone: email,
+        password: password,
+        roleId: 2,
+        isAcceptTermConditions: isAcceptTermConditions
+      };
+
+      const response = await signUpApi(requestBody);
+
+      setSuccessMessage("OTP sent successfully! Redirecting to verification page...");
       setErrorMessage("");
-      setTimeout(() => navigate("/"), 2000);
-    } else {
+
+      setTimeout(() => {
+        navigate("/verify-otp", { state: email });
+      }, 2000);
+
+    } catch (error) {
       setSuccessMessage("");
-      setErrorMessage(response.message);
+      setErrorMessage(error.response?.data?.message || "Failed to create account. Please try again.");
+      console.error("Signup failed:", error);
     }
   };
 
@@ -43,15 +60,15 @@ const CreateAccount = () => {
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl 
             xl:text-5xl 2xl:text-6xl 3xl:text-6xl 
-            font-bold  lg:text-left 
+            font-bold lg:text-left 
             text-gray-900 mb-4">
             Create account
           </h1>
 
           <p className="text-base sm:text-lg md:text-xl lg:text-xl 
             xl:text-2xl 2xl:text-lg 3xl:text-4xl 
-             lg:text-left 
-           mb-6 font-normal">
+            lg:text-left 
+            mb-6 font-normal">
             Let's get started with your 30 days trial
           </p>
 
@@ -74,21 +91,6 @@ const CreateAccount = () => {
           )}
 
           <form onSubmit={handleRegister} className="space-y-4 sm:space-y-5 md:space-y-6">
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full 
-                h-12 sm:h-13 md:h-14 lg:h-14 xl:h-15 2xl:h-16 3xl:h-18 
-                p-3 sm:p-4 md:p-4 lg:p-4 xl:p-5 2xl:p-5 3xl:p-6 
-                border border-gray-400 rounded-lg 
-                text-base sm:text-lg md:text-lg lg:text-lg 
-                xl:text-lg 2xl:text-lg 3xl:text-2xl 
-                focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-
             <input
               type="email"
               placeholder="Email"
@@ -118,6 +120,28 @@ const CreateAccount = () => {
                 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
+
+            {/* Terms and Conditions Checkbox */}
+            <div className="flex items-start mt-4">
+              <div className="flex items-center h-5">
+                <input
+                  id="terms"
+                  type="checkbox"
+                  checked={isAcceptTermConditions}
+                  onChange={(e) => setIsAcceptTermConditions(e.target.checked)}
+                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
+                />
+              </div>
+              <div className="ml-3 text-sm">
+                <label htmlFor="terms" className="text-gray-500 text-sm sm:text-base">
+                  I accept the{" "}
+                  <a className="text-blue-600 hover:underline">
+                    Terms and Conditions
+                  </a>
+                  , which include consent to the collection and use of personal information as described in our Privacy Policy.
+                </label>
+              </div>
+            </div>
 
             <button
               type="submit"

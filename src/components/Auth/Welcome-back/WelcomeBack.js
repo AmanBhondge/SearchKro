@@ -1,24 +1,41 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import img from "../../../Assets/Frameok.png";
 import Logo from "../../../Assets/Google.png";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../Auth-provider/AuthProvider";
+import { signInApi } from "../../utils/AxiosApi";
 
 const WelcomeBack = () => {
-    const { loginUser } = useContext(AuthContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        const response = loginUser(email, password);
 
-        if (response.success) {
-            navigate("/main-dashboard");
-        } else {
-            setErrorMessage(response.message);
+        try {
+            const requestBody = {
+                emailPhone: email,
+                password: password,
+                roleId: 2,
+                fcmToken: ""
+            };
+
+            const response = await signInApi(requestBody);
+
+            if (response.data && response.data.token) {
+                const Cookies = (await import('js-cookie')).default;
+                Cookies.set("Token", response.data.token);
+
+                navigate("/main-dashboard"); 
+            } else {
+                setErrorMessage("Login failed. Please try again.");
+            }
+
+        } catch (error) {
+
+            setErrorMessage(error.response?.data?.message || "Login failed. Please check your credentials.");
+            console.error("Login failed:", error);
         }
     };
 
