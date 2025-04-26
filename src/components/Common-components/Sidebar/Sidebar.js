@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { TbCategory2 } from "react-icons/tb";
 import { RxDashboard } from "react-icons/rx";
 import { IoIosStarOutline } from "react-icons/io";
@@ -11,7 +11,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Logo from '../../../Assets/Logo.png';
 import Logout from "../Pop-ups/Logout";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { RxCross2 } from "react-icons/rx";
+import { LuUsers } from "react-icons/lu";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -75,6 +75,7 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Dashboard', icon: <RxDashboard size={22} />, navigate: '/main-dashboard' },
     { name: 'Categories', icon: <TbCategory2 size={22} />, navigate: '/categories' },
+    { name: 'Users', icon: <LuUsers size={22} />, navigate: '/user' },
     { name: 'Reports', icon: <MdOutlineReportGmailerrorred size={22} />, navigate: '/reportes' },
     { name: 'Legal Policy', icon: <GoShieldLock size={22} />, navigate: '/legal-policy' },
     { name: 'Location', icon: <HiOutlineLocationMarker size={22} />, navigate: '/location' },
