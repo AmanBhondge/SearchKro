@@ -12,23 +12,32 @@ import PasswordReset from './components/Auth/Password-reset/PasswordReset';
 import ForgotPassword from './components/Auth/Forgot-password/ForgotPassword';
 import VerifyOtp from './components/Auth/Verify-otp/VerifyOtp';
 import VerifyForgotPasswordOtp from './components/Auth/Verify-forgot-password-otp/VerifyForgotPasswordOtp';
+import User from './components/Dash-board/User-management/User';
+import UserDetailsPage from './components/Dash-board/User-management/UserDetailPage';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
 
 const App = () => {
   return (
     <div>
       <Routes>
-        <Route path="/categories" element={<Categories />}></Route>
-        <Route path="/legal-policy" element={<LegalPolicy />}></Route>
-        <Route path="/location" element={<Location />}></Route>
-        <Route path="/main-dashboard" element={<MainDashboard />}></Route>
-        <Route path="/reportes" element={<Reportes />}></Route>
-        <Route path="/rating" element={<Rating />}></Route>
-        <Route path="/create-account" element={<CreateAccount />}></Route>
-        <Route path="/" element={<WelcomeBack />}></Route>
-        <Route path="/verify-forgot-password-reset" element={<VerifyForgotPasswordOtp />}></Route>
-        <Route path="/verify-otp" element={<VerifyOtp />}></Route>
-        <Route path="/password-reset" element={<PasswordReset />}></Route>
-        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        {/* Public routes */}
+        <Route path="/" element={<WelcomeBack />} />
+        <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/verify-forgot-password-reset" element={<VerifyForgotPasswordOtp />} />
+        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/password-reset" element={<PasswordReset />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/legal-policy" element={<LegalPolicy />} />
+          <Route path="/location" element={<Location />} />
+          <Route path="/main-dashboard" element={<MainDashboard />} />
+          <Route path="/reportes" element={<Reportes />} />
+          <Route path="/rating" element={<Rating />} />
+          <Route path="/user" element={<User />} />
+          <Route path="/user/:id" element={<UserDetailsPage />} />
+        </Route>
       </Routes>
     </div>
   );

@@ -10,6 +10,7 @@ const CreateAccount = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [isAcceptTermConditions, setIsAcceptTermConditions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -19,6 +20,8 @@ const CreateAccount = () => {
       setErrorMessage("Please accept the terms and conditions to continue");
       return;
     }
+
+    setIsLoading(true);
 
     try {
       const requestBody = {
@@ -41,6 +44,8 @@ const CreateAccount = () => {
       setSuccessMessage("");
       setErrorMessage(error.response?.data?.message || "Failed to create account. Please try again.");
       console.error("Signup failed:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -121,7 +126,6 @@ const CreateAccount = () => {
               required
             />
 
-            {/* Terms and Conditions Checkbox */}
             <div className="flex items-start mt-4">
               <div className="flex items-center h-5">
                 <input
@@ -145,19 +149,30 @@ const CreateAccount = () => {
 
             <button
               type="submit"
+              disabled={isLoading}
               className="w-full 
                 h-12 sm:h-13 md:h-14 lg:h-12 xl:h-12 2xl:h-16 3xl:h-18 
                 bg-cyan-500 text-white rounded-lg 
                 hover:bg-cyan-600 transition 
                 text-base sm:text-lg md:text-lg lg:text-lg 
                 xl:text-xl 2xl:text-xl 3xl:text-2xl 
-                font-semibold"
+                font-semibold
+                flex items-center justify-center"
             >
-              Create account
+              {isLoading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                "Create account"
+              )}
             </button>
           </form>
 
-          {/* Login Link */}
           <div className="mt-4 sm:mt-5 md:mt-6 
             text-sm sm:text-base md:text-base lg:text-base 
             xl:text-lg 2xl:text-[16px] 3xl:text-2xl 
