@@ -15,6 +15,8 @@ import VerifyForgotPasswordOtp from './components/Auth/Verify-forgot-password-ot
 import User from './components/Dash-board/User-management/User';
 import UserDetailsPage from './components/Dash-board/User-management/UserDetailPage';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
+import SubCategories from './components/Dash-board/Categories/categoryComponents/Subcategories';
+import EditCategory from './components/Dash-board/Categories/categoryComponents/EditCategory';
 
 const App = () => {
   return (
@@ -30,6 +32,8 @@ const App = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/categories" element={<Categories />} />
+          <Route path='/categories/:id' element={<SubCategories/>}/>
+          <Route path='/edit-category/:id' element={<EditCategory/>}/>
           <Route path="/legal-policy" element={<LegalPolicy />} />
           <Route path="/location" element={<Location />} />
           <Route path="/main-dashboard" element={<MainDashboard />} />
