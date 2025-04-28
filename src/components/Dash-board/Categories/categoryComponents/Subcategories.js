@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getCategories, deleteCategory } from "../../../utils/AxiosApi";
-import { FaTrash, FaEdit } from "react-icons/fa"; 
+import { getCategories, deleteCategory, updateCategory } from "../../../utils/AxiosApi";
+import SubcategoryList from "./SubcategoryList";
 import EditCategory from "./EditCategory";
 
 const SubCategories = () => {
@@ -11,10 +11,8 @@ const SubCategories = () => {
   const [category, setCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(6);
-  const [isEditing, setIsEditing] = useState(false);  // state to manage editing state
-  const [categoryToEdit, setCategoryToEdit] = useState(null); // state to store category to edit
+  const [isEditing, setIsEditing] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState(null);
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -41,7 +39,7 @@ const SubCategories = () => {
       } catch (err) {
         setError(
           err.message ||
-            "Failed to load category details. Please try again."
+          "Failed to load category details. Please try again."
         );
         console.error("Error fetching category:", err);
       } finally {
@@ -52,244 +50,60 @@ const SubCategories = () => {
     fetchCategory();
   }, [categoryId]);
 
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentSubcategories =
-    category?.subCategories.slice(indexOfFirstItem, indexOfLastItem) || [];
-  const totalPages = Math.ceil(
-    (category?.subCategories.length || 0) / itemsPerPage
-  );
-
-  const paginate = (pageNumber) => {
-    if (pageNumber >= 1 && pageNumber <= totalPages) {
-      setCurrentPage(pageNumber);
-    }
-  };
-
   const handleBack = () => {
     navigate("/categories");
   };
 
-  const handleDelete = async (id, index) => {
-    try {
-      await deleteCategory(id);
-      setCategory((prevCategory) => {
-        const updatedSubCategories = prevCategory.subCategories.filter(
-          (_, idx) => idx !== index
-        );
-        return { ...prevCategory, subCategories: updatedSubCategories };
-      });
-      alert("Subcategory deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting subcategory:", error);
-      alert("Failed to delete subcategory. Please try again.");
+  const handleDelete = async (subcategory) => {
+    if (window.confirm("Are you sure you want to delete this subcategory?")) {
+      try {
+        // Use the index from the subcategory (like "2.1" for first subcategory of category 2)
+        await deleteCategory(subcategory.index);
+        
+        // Refetch the category to get updated subcategories
+        const response = await getCategories();
+        const updatedCategories = response.data.data;
+        const updatedCategory = updatedCategories.find(cat => cat._id === categoryId);
+        
+        setCategory({
+          ...updatedCategory,
+          subCategories: updatedCategory.subCategories || []
+        });
+        alert("Subcategory deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting subcategory:", error);
+        alert("Failed to delete subcategory. Please try again.");
+      }
     }
   };
 
   const openEditModal = (subcategory) => {
-        setCategoryToEdit(subcategory);
-        setIsEditing(true);
+    setCategoryToEdit(subcategory);
+    setIsEditing(true);
   };
 
   const closeEditModal = () => {
-      setIsEditing(false);
-      setCategoryToEdit(null);
+    setIsEditing(false);
+    setCategoryToEdit(null);
   };
 
-  const handleUpdateSubcategory = (updatedSubcategory) => {
-      // Update the subcategory in the state
-      setCategory((prevCategory) => {
-          const updatedSubCategories = prevCategory.subCategories.map((sub) =>
-              sub._id === updatedSubcategory._id ? updatedSubcategory : sub
-          );
-          return { ...prevCategory, subCategories: updatedSubCategories };
+  const handleUpdateSubcategory = async (updatedSubcategory) => {
+    try {
+      await updateCategory(updatedSubcategory._id, updatedSubcategory);
+      // Refetch the category to get updated data
+      const response = await getCategories();
+      const updatedCategories = response.data.data;
+      const updatedCategory = updatedCategories.find(cat => cat._id === categoryId);
+      
+      setCategory({
+        ...updatedCategory,
+        subCategories: updatedCategory.subCategories || []
       });
-      closeEditModal(); // Close the modal after updating
-  };
-
-  // Render subcategory card
-  const SubcategoryCard = ({ subcategory, index }) => {
-    const handleCardClick = () => {
-      // Navigate to subcategory details if needed
-      // navigate(`/categories/${categoryId}/${subcategory._id}`);
-    };
-
-    return (
-      <div
-        className="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl border-l-4 border-blue-500 cursor-pointer"
-        onClick={handleCardClick}
-      >
-        <div className="relative">
-          {subcategory.image ? (
-            <img
-              src={subcategory.image}
-              alt={subcategory.name}
-              className="w-full h-40 object-cover"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src =
-                  "https://via.placeholder.com/300x150?text=No+Image";
-              }}
-            />
-          ) : (
-            <div className="w-full h-40 bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-500">No Image</span>
-            </div>
-          )}
-
-          {/* Delete Icon Button */}
-          <div className="absolute top-2 right-2 flex flex-col items-center">
-              <button
-                  onClick={(e) => {
-                      e.stopPropagation();
-                      openEditModal(subcategory);
-                  }}
-                  className="p-2 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 mb-2"
-                  title="Edit Subcategory"
-              >
-                  <FaEdit />
-              </button>
-              <button
-                  onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(subcategory._id, index);
-                  }}
-                  className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
-                  title="Delete Subcategory"
-              >
-                  <FaTrash />
-              </button>
-          </div>
-        </div>
-
-        <div className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <h3
-              className="text-lg font-bold text-gray-800 line-clamp-1"
-              title={subcategory.name}
-            >
-              {subcategory.name}
-            </h3>
-            <span className="text-sm text-gray-500 whitespace-nowrap">
-              {category?.index ? `${category.index}.${index}` : index}
-            </span>
-          </div>
-
-          <p
-            className="text-gray-600 text-sm mb-3 line-clamp-2"
-            title={subcategory.description}
-          >
-            {subcategory.description || "No description available"}
-          </p>
-        </div>
-      </div>
-    );
-  };
-
-  // Pagination component
-  const Pagination = () => {
-    if (totalPages <= 1) return null;
-
-    const maxVisiblePages = 5;
-    let startPage, endPage;
-
-    if (totalPages <= maxVisiblePages) {
-      startPage = 1;
-      endPage = totalPages;
-    } else {
-      const halfVisible = Math.floor(maxVisiblePages / 2);
-
-      if (currentPage <= halfVisible + 1) {
-        startPage = 1;
-        endPage = maxVisiblePages;
-      } else if (currentPage >= totalPages - halfVisible) {
-        startPage = totalPages - maxVisiblePages + 1;
-        endPage = totalPages;
-      } else {
-        startPage = currentPage - halfVisible;
-        endPage = currentPage + halfVisible;
-      }
+      closeEditModal();
+    } catch (error) {
+      console.error("Error updating subcategory:", error);
+      alert("Failed to update subcategory. Please try again.");
     }
-
-    return (
-      <nav className="flex justify-center mt-6">
-        <ul className="flex items-center space-x-1">
-          <li>
-            <button
-              onClick={() => paginate(currentPage - 1)}
-              disabled={currentPage === 1}
-              className={`px-3 py-1 rounded-md ${
-                currentPage === 1
-                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                  : "bg-blue-500 text-white hover:bg-blue-600"
-              }`}
-              aria-label="Previous page"
-            >
-              &laquo;
-            </button>
-          </li>
-
-          {startPage > 1 && (
-            <li>
-              <button
-                onClick={() => paginate(1)}
-                className="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300"
-              >
-                1
-              </button>
-            </li>
-          )}
-
-          {startPage > 2 && <li className="px-2">...</li>}
-
-          {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map(
-            (number) => (
-              <li key={number}>
-                <button
-                  onClick={() => paginate(number)}
-                  className={`px-3 py-1 rounded-md ${
-                    currentPage === number
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                  }`}
-                >
-                  {number}
-                </button>
-              </li>
-            )
-          )}
-
-          {endPage < totalPages - 1 && <li className="px-2">...</li>}
-
-          {endPage < totalPages && (
-            <li>
-              <button
-                onClick={() => paginate(totalPages)}
-                className="px-3 py-1 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300"
-              >
-                {totalPages}
-              </button>
-            </li>
-          )}
-
-          <li>
-            <button
-              onClick={() => paginate(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className={`px-3 py-1 rounded-md ${
-                currentPage === totalPages
-                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                  : "bg-blue-500 text-white hover:bg-blue-600"
-              }`}
-              aria-label="Next page"
-            >
-              &raquo;
-            </button>
-          </li>
-        </ul>
-      </nav>
-    );
   };
 
   if (loading) {
@@ -351,43 +165,21 @@ const SubCategories = () => {
           </span>
         </div>
 
-        {category.subCategories.length > 0 ? (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {currentSubcategories.map((subcategory, idx) => (
-                <SubcategoryCard
-                  key={subcategory._id}
-                  subcategory={subcategory}
-                  index={indexOfFirstItem + idx}
-                />
-              ))}
-            </div>
+        <SubcategoryList 
+          category={category}
+          onDelete={handleDelete}
+          onEdit={openEditModal}
+        />
 
-            <Pagination />
-          </>
-        ) : (
-          <div className="text-center py-10">
-            <div className="text-gray-500 text-lg mb-4">
-              No subcategories found for this category
-            </div>
-            <button
-              onClick={handleBack}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-            >
-              Back to Categories
-            </button>
-          </div>
+        {isEditing && categoryToEdit && (
+          <EditCategory
+            isOpen={isEditing}
+            onClose={closeEditModal}
+            category={categoryToEdit}
+            onUpdate={handleUpdateSubcategory}
+          />
         )}
       </div>
-      
-        {isEditing && categoryToEdit && (
-                <EditCategory
-                    isOpen={isEditing}
-                    onClose={closeEditModal}
-                    category={categoryToEdit}
-                    onUpdate={handleUpdateSubcategory}
-                />
-            )}
     </div>
   );
 };

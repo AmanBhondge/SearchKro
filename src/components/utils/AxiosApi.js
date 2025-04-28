@@ -76,19 +76,30 @@ export const updateUserById = (id, userData) =>{
 }
 
 //Categories end points
+
+
+
+
 export const getCategories = () => {
   return Api.get("/api/category/getCategory");
 };
 
+// Get category by ID (if needed)
+export const getCategoryById = (categoryId) => {
+  return Api.get(`/api/category/getCategoryById?id=${categoryId}`);
+};
+
+// Create new category
 export const createCategory = (categoryData) => {
   return Api.post("/api/category/createCategory", categoryData);
 };
-
+// Update category
 export const updateCategory = (categoryData) => {
   return Api.put("/api/category/updateCategory", categoryData);
 };
 
+// Delete category
 export const deleteCategory = (index) => {
-  const encodedIndex = encodeURIComponent(index); 
+  const encodedIndex = encodeURIComponent(index); // handles '1.1' safely
   return Api.delete(`/api/category/deleteCategory?index=${encodedIndex}`);
 };

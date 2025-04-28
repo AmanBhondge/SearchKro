@@ -31,9 +31,10 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/categories" element={<Categories />} />
-          <Route path='/categories/:id' element={<SubCategories/>}/>
-          <Route path='/edit-category/:id' element={<EditCategory/>}/>
+        <Route path="/categories" element={<Categories />}>
+  <Route path=":categoryId" element={<SubCategories />} />
+</Route>
+       <Route path="/edit-category/:categoryId" element={<EditCategory />} />
           <Route path="/legal-policy" element={<LegalPolicy />} />
           <Route path="/location" element={<Location />} />
           <Route path="/main-dashboard" element={<MainDashboard />} />
