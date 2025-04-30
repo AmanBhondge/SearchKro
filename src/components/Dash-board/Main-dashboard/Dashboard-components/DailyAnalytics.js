@@ -86,58 +86,52 @@ const DailyAnalytics = () => {
 
   // Data for Pie Chart - Buyers vs Sellers
   const pieData = [
-    { name: "Buyers", value: analyticsData.totalBuyers, fill: "#F59E0B" },
-    { name: "Sellers", value: analyticsData.totalSellers, fill: "#E11D48" },
+    { name: "Buyers", value: analyticsData.totalBuyers, fill: "#06C4D9" },
+    { name: "Sellers", value: analyticsData.totalSellers, fill: "#191919" },
   ];
 
   const cards = [
     {
       title: "Total Users",
       value: analyticsData.totalUsers,
-      icon: <FaUsers className="text-blue-600" />,
-      bgGradient: "from-blue-50 to-blue-100",
-      borderColor: "border-blue-200",
-      textColor: "text-blue-700",
+      icon: <FaUsers className="text-zinc-800" />,
+      bgGradient: "from-[#191919] to-zinc-600",
+      textColor: "text-[#06C4D9]",
     },
     {
       title: "Verified Users",
       value: analyticsData.verifiedUsers,
-      icon: <FaUserCheck className="text-green-600" />,
-      bgGradient: "from-green-50 to-green-100",
-      borderColor: "border-green-200",
-      textColor: "text-green-700",
+      icon: <FaUserCheck className="text-zinc-800" />,
+      bgGradient: "from-[#191919] to-zinc-600",
+      textColor: "text-[#06C4D9]",
     },
     {
       title: "Active Today",
       value: analyticsData.activeToday,
-      icon: <FaUserClock className="text-purple-600" />,
-      bgGradient: "from-purple-50 to-purple-100",
-      borderColor: "border-purple-200",
-      textColor: "text-purple-700",
+      icon: <FaUserClock className="text-zinc-800" />,
+      bgGradient: "from-[#191919] to-zinc-600",
+      textColor: "text-[#06C4D9]",
     },
     {
       title: "Active This Month",
       value: analyticsData.activeThisMonth,
-      icon: <FaCalendarAlt className="text-indigo-600" />,
-      bgGradient: "from-indigo-50 to-indigo-100",
-      borderColor: "border-indigo-200",
-      textColor: "text-indigo-700",
+      icon: <FaCalendarAlt className="text-zinc-800" />,
+      bgGradient: "from-[#191919] to-zinc-600",
+      textColor: "text-[#06C4D9]",
     },
     {
       title: "Total Buyers",
       value: analyticsData.totalBuyers,
-      icon: <HiShoppingCart className="text-amber-600" />,
-      bgGradient: "from-amber-50 to-amber-100",
-      borderColor: "border-amber-200",
-      textColor: "text-amber-700",
+      icon: <HiShoppingCart className="text-zinc-800" />,
+      bgGradient: "from-[#191919] to-zinc-600",
+      textColor: "text-[#06C4D9]",
     },
     {
       title: "Total Sellers",
       value: analyticsData.totalSellers,
-      icon: <HiCurrencyDollar className="text-rose-600" />,
-      bgGradient: "from-rose-50 to-rose-100",
-      borderColor: "border-rose-200",
-      textColor: "text-rose-700",
+      icon: <HiCurrencyDollar className="text-zinc-800" />,
+      bgGradient: "from-[#191919] to-zinc-600",
+      textColor: "text-[#06C4D9]",
     },
   ];
 

@@ -8,7 +8,7 @@ import { GoShieldLock } from "react-icons/go";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { FiLogOut } from "react-icons/fi";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import Logo from '../../../Assets/Logo.png';
+import Logo from "../../../Assets/Logo.png";
 import Logout from "../Pop-ups/Logout";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { LuUsers } from "react-icons/lu";
@@ -17,7 +17,9 @@ const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [collapsed, setCollapsed] = useState(location.state?.sidebarCollapsed || false);
+  const [collapsed, setCollapsed] = useState(
+    location.state?.sidebarCollapsed || false
+  );
   const [active, setActive] = useState("");
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -39,9 +41,9 @@ const Sidebar = () => {
 
     handleResize();
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleLogoutClick = () => {
@@ -63,23 +65,48 @@ const Sidebar = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    if (path.includes('dashboard')) setActive('Dashboard');
-    else if (path.includes('categories')) setActive('Categories');
-    else if (path.includes('reportes')) setActive('Reports');
-    else if (path.includes('policy')) setActive('Legal Policy');
-    else if (path.includes('location')) setActive('Location');
-    else if (path.includes('rating')) setActive('Rating');
-    else setActive('Dashboard');
+    if (path.includes("dashboard")) setActive("Dashboard");
+    else if (path.includes("categories")) setActive("Categories");
+    else if (path.includes("user")) setActive("Users");
+    else if (path.includes("reportes")) setActive("Reports");
+    else if (path.includes("policy")) setActive("Legal Policy");
+    else if (path.includes("location")) setActive("Location");
+    else if (path.includes("rating")) setActive("Rating");
+    else setActive("Dashboard");
   }, [location]);
 
   const menuItems = [
-    { name: 'Dashboard', icon: <RxDashboard size={22} />, navigate: '/main-dashboard' },
-    { name: 'Categories', icon: <TbCategory2 size={22} />, navigate: '/categories' },
-    { name: 'Users', icon: <LuUsers size={22} />, navigate: '/user' },
-    { name: 'Reports', icon: <MdOutlineReportGmailerrorred size={22} />, navigate: '/reportes' },
-    { name: 'Legal Policy', icon: <GoShieldLock size={22} />, navigate: '/legal-policy' },
-    { name: 'Location', icon: <HiOutlineLocationMarker size={22} />, navigate: '/location' },
-    { name: 'Rating', icon: <IoIosStarOutline size={22} />, navigate: '/rating' }
+    {
+      name: "Dashboard",
+      icon: <RxDashboard size={22} />,
+      navigate: "/main-dashboard",
+    },
+    {
+      name: "Categories",
+      icon: <TbCategory2 size={22} />,
+      navigate: "/categories",
+    },
+    { name: "Users", icon: <LuUsers size={22} />, navigate: "/user" },
+    {
+      name: "Reports",
+      icon: <MdOutlineReportGmailerrorred size={22} />,
+      navigate: "/reportes",
+    },
+    {
+      name: "Legal Policy",
+      icon: <GoShieldLock size={22} />,
+      navigate: "/legal-policy",
+    },
+    {
+      name: "Location",
+      icon: <HiOutlineLocationMarker size={22} />,
+      navigate: "/location",
+    },
+    {
+      name: "Rating",
+      icon: <IoIosStarOutline size={22} />,
+      navigate: "/rating",
+    },
   ];
 
   const transitionDuration = "duration-500";
@@ -107,24 +134,54 @@ const Sidebar = () => {
       )}
 
       <div
-        className={`bg-[#191919] text-white flex flex-col p-4 transition-all ${transitionDuration} ${transitionTiming} ${isMobile
-            ? isOpen ? 'translate-x-0' : '-translate-x-full'
-            : collapsed ? 'w-[82px] 2xl:w-[100px]' : 'w-[240px] 2xl:w-[300px]'
-          } ${isMobile ? 'fixed left-0 top-0 z-40 h-screen' : 'h-screen sticky top-0'}`}
+        className={`bg-[#191919] text-white flex flex-col p-4 transition-all ${transitionDuration} ${transitionTiming} ${
+          isMobile
+            ? isOpen
+              ? "translate-x-0"
+              : "-translate-x-full"
+            : collapsed
+            ? "w-[82px] 2xl:w-[100px]"
+            : "w-[240px] 2xl:w-[300px]"
+        } ${
+          isMobile
+            ? "fixed left-0 top-0 z-40 h-screen"
+            : "h-screen sticky top-0"
+        }`}
       >
         <div className="mt-[12%] flex items-center gap-[4px] ml-[11px] relative">
-          <img src={Logo} alt="Logo" className="w-[45px] 2xl:w-[50px] h-[34.13px] 2xl:h-[38px]" />
-          <div className={`transition-all ${transitionDuration} ${transitionTiming} ${collapsed && !isMobile ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+          <div className="w-[34px] h-[34.13px] text-xl bg-white text-black font-extrabold flex items-center justify-center rounded-full">
+            C
+          </div>
+          <div
+            className={`transition-all ${transitionDuration} ${transitionTiming} ${
+              collapsed && !isMobile
+                ? "opacity-0 w-0 overflow-hidden"
+                : "opacity-100 w-auto"
+            }`}
+          >
             {(!collapsed || isMobile) && (
-              <span style={{ fontWeight: "700" }} className="text-[26px] 2xl:text-[35px]">Searchkro</span>
+              <span
+                style={{ fontWeight: "700" }}
+                className="text-[26px] 2xl:text-[35px]"
+              >
+                CrosyDeal
+              </span>
             )}
           </div>
-          <div onClick={toggleSidebar} className={`transition-all ${transitionDuration} ${transitionTiming} absolute ${collapsed ? 'left-[42px] 2xl:left-[55px]' : 'left-[200px] 2xl:left-[260px]'
-            }`}>
+          <div
+            onClick={toggleSidebar}
+            className={`transition-all ${transitionDuration} ${transitionTiming} absolute ${
+              collapsed
+                ? "left-[42px] 2xl:left-[55px]"
+                : "left-[200px] 2xl:left-[260px]"
+            }`}
+          >
             {isMobile ? (
               <></>
             ) : (
-              <button className={`text-white cursor-pointer bg-[#191919] rounded-full w-6 2xl:w-[30px] h-6 2xl:h-[30px] border flex items-center justify-center border-white text-center transition-all ${transitionDuration} ${transitionTiming}`} >
+              <button
+                className={`text-white cursor-pointer bg-[#191919] rounded-full w-6 2xl:w-[30px] h-6 2xl:h-[30px] border flex items-center justify-center border-white text-center transition-all ${transitionDuration} ${transitionTiming}`}
+              >
                 {collapsed ? <IoIosArrowForward /> : <IoIosArrowBack />}
               </button>
             )}
@@ -134,24 +191,51 @@ const Sidebar = () => {
           {menuItems.map((item) => (
             <div
               key={item.name}
-              className={`flex items-center ${!isMobile && collapsed ? 'justify-center' : 'space-x-3'} ${!isMobile && collapsed ? 'w-[48px] 2xl:w-[55px]' : 'w-[192px] 2xl:w-[260px]'
-                } h-[48px] 2xl:h-[55px] rounded-[4px] cursor-pointer transition-all ${transitionDuration} ${transitionTiming} ${active === item.name ? "bg-[#06C4D9] text-white" : "text-[#D9D9D9]"
-                }`}
+              className={`flex items-center ${
+                !isMobile && collapsed ? "justify-center" : "space-x-3"
+              } ${
+                !isMobile && collapsed
+                  ? "w-[48px] 2xl:w-[55px]"
+                  : "w-[192px] 2xl:w-[260px]"
+              } h-[48px] 2xl:h-[55px] rounded-[4px] cursor-pointer transition-all ${transitionDuration} ${transitionTiming} ${
+                active === item.name
+                  ? "bg-[#06C4D9] text-white"
+                  : "text-[#D9D9D9]"
+              }`}
               onClick={() => handleNavigation(item.navigate, item.name)}
             >
               {active === item.name && (
-                <span 
+                <span
                   className={`w-[6px] 2xl:w-[8px] h-[36px] 2xl:h-[40px] rounded-md bg-white transition-all 
                     ${transitionDuration} ${transitionTiming} 
-                    ${(!isMobile && !collapsed) ? '' : ''}`} 
+                    ${!isMobile && !collapsed ? "" : ""}`}
                 />
               )}
-              <div className={`transition-all ${transitionDuration} ${transitionTiming} ${active === item.name && (!isMobile && !collapsed) ? "ml-1 text-white" : (!isMobile && collapsed) ? "mx-auto" : "ml-2 text-[#D9D9D9]"}`}>
+              <div
+                className={`transition-all ${transitionDuration} ${transitionTiming} ${
+                  active === item.name && !isMobile && !collapsed
+                    ? "ml-1 text-white"
+                    : !isMobile && collapsed
+                    ? "mx-auto"
+                    : "ml-2 text-[#D9D9D9]"
+                }`}
+              >
                 {item.icon}
               </div>
-              <div className={`transition-all ${transitionDuration} ${transitionTiming} ${(!isMobile && collapsed) ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+              <div
+                className={`transition-all ${transitionDuration} ${transitionTiming} ${
+                  !isMobile && collapsed
+                    ? "opacity-0 w-0 overflow-hidden"
+                    : "opacity-100 w-auto"
+                }`}
+              >
                 {((!isMobile && !collapsed) || isMobile) && (
-                  <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] 2xl:text-[20px] text-white">{item.name}</span>
+                  <span
+                    style={{ fontWeight: "700", lineHeight: "24px" }}
+                    className="text-[16px] 2xl:text-[20px] text-white"
+                  >
+                    {item.name}
+                  </span>
                 )}
               </div>
             </div>
@@ -160,13 +244,31 @@ const Sidebar = () => {
         <div className="mt-auto mb-6">
           <button
             onClick={handleLogoutClick}
-            className={`transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && collapsed ? 'w-[48px] 2xl:w-[55px] justify-center' : 'w-[192px] 2xl:w-[260px] space-x-3'
-              } h-[48px] 2xl:h-[55px] bg-[#474747] rounded-lg cursor-pointer flex items-center text-[#D9D9D9] hover:text-white`}
+            className={`transition-all ${transitionDuration} ${transitionTiming} ${
+              !isMobile && collapsed
+                ? "w-[48px] 2xl:w-[55px] justify-center"
+                : "w-[192px] 2xl:w-[260px] space-x-3"
+            } h-[48px] 2xl:h-[55px] bg-[#474747] rounded-lg cursor-pointer flex items-center text-[#D9D9D9] hover:text-white`}
           >
-            <FiLogOut className={`w-5 h-5 transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && !collapsed || isMobile ? 'ml-4' : ''}`} />
-            <div className={`transition-all ${transitionDuration} ${transitionTiming} ${(!isMobile && collapsed) ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+            <FiLogOut
+              className={`w-5 h-5 transition-all ${transitionDuration} ${transitionTiming} ${
+                (!isMobile && !collapsed) || isMobile ? "ml-4" : ""
+              }`}
+            />
+            <div
+              className={`transition-all ${transitionDuration} ${transitionTiming} ${
+                !isMobile && collapsed
+                  ? "opacity-0 w-0 overflow-hidden"
+                  : "opacity-100 w-auto"
+              }`}
+            >
               {((!isMobile && !collapsed) || isMobile) && (
-                <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] 2xl:text-[20px] text-white">Logout</span>
+                <span
+                  style={{ fontWeight: "700", lineHeight: "24px" }}
+                  className="text-[16px] 2xl:text-[20px] text-white"
+                >
+                  Logout
+                </span>
               )}
             </div>
           </button>
