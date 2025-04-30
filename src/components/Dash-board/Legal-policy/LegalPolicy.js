@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../../Common-components/Sidebar/Sidebar";
 import Navbar from "../../Common-components/Navbar/Navbar";
 import { ChevronRight, X, Plus, Pencil, Save, Trash2 } from "lucide-react";
-import { getFaqs, UpdateFaqs, DeleteFaqs } from "../../utils/AxiosApi";
+import { getFaqs, UpdateFaqs, DeleteFaqs, postFaqs } from "../../utils/AxiosApi";
 
 const LegalPolicy = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,6 +14,8 @@ const LegalPolicy = () => {
   const [editedFaq, setEditedFaq] = useState({ question: "", answer: "" });
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [faqToDelete, setFaqToDelete] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newFaq, setNewFaq] = useState({ question: "", answer: "" });
 
   useEffect(() => {
     fetchFaqs();
@@ -27,6 +30,7 @@ const LegalPolicy = () => {
 
       if (Array.isArray(response.data)) {
         setFaqs(response.data);
+        console.log(response.data);
       } else if (response.data && Array.isArray(response.data.data)) {
         setFaqs(response.data.data);
       } else {
@@ -38,6 +42,10 @@ const LegalPolicy = () => {
       setError("Failed to load FAQs. Please try again later.");
       setLoading(false);
     }
+  };
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   const handleEditClick = (faq) => {
@@ -80,6 +88,36 @@ const LegalPolicy = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedFaq({ ...editedFaq, [name]: value });
+  };
+
+  const handleNewFaqChange = (e) => {
+    const { name, value } = e.target;
+    setNewFaq({ ...newFaq, [name]: value });
+  };
+
+  const toggleAddForm = () => {
+    setShowAddForm(!showAddForm);
+    setNewFaq({ question: "", answer: "" });
+    setFormError("");
+  };
+
+  const [formError, setFormError] = useState("");
+
+  const handleAddFaq = async () => {
+    if (!newFaq.question || !newFaq.answer) {
+      setFormError("Question and answer are required");
+      return;
+    }
+
+    try {
+      await postFaqs(newFaq);
+      setNewFaq({ question: "", answer: "" });
+      setShowAddForm(false);
+      setFormError("");
+      fetchFaqs();
+    } catch (err) {
+      setFormError("Failed to add FAQ. Please try again.");
+    }
   };
 
   return (
@@ -125,10 +163,84 @@ const LegalPolicy = () => {
           )}
 
           <div className="w-full max-w-4xl 2xl:max-w-full 2xl:px-12 mx-auto">
+            <div className="mb-4 flex justify-end">
+              <button
+                className="flex items-center  text-white px-4 py-2 rounded-lg bg-black"
+                onClick={toggleAddForm}
+              >
+                <Plus size={18} className="mr-2" /> Add New FAQ
+              </button>
+            </div>
+
+            {showAddForm && (
+              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-bold">Add New FAQ</h3>
+                    <button onClick={toggleAddForm}>
+                      <X size={20} />
+                    </button>
+                  </div>
+                  {formError && (
+                    <div className="mb-4 bg-red-100 text-red-700 p-3 rounded-lg">
+                      {formError}
+                    </div>
+                  )}
+                  <div className="mb-4">
+                    <label className="block mb-2 text-sm font-medium">
+                      Question
+                    </label>
+                    <input
+                      type="text"
+                      name="question"
+                      value={newFaq.question}
+                      onChange={handleNewFaqChange}
+                      className="w-full p-3 border rounded-lg"
+                      placeholder="Enter question"
+                    />
+                  </div>
+                  <div className="mb-6">
+                    <label className="block mb-2 text-sm font-medium">
+                      Answer
+                    </label>
+                    <textarea
+                      name="answer"
+                      value={newFaq.answer}
+                      onChange={handleNewFaqChange}
+                      className="w-full p-3 border rounded-lg"
+                      rows="5"
+                      placeholder="Enter answer"
+                    />
+                  </div>
+                  <div className="flex justify-end gap-3">
+                    <button
+                      className="flex items-center bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300"
+                      onClick={toggleAddForm}
+                    >
+                      <X size={16} className="mr-2" /> Cancel
+                    </button>
+                    <button
+                      className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+                      onClick={handleAddFaq}
+                    >
+                      <Save size={16} className="mr-2" /> Save
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+                {error}
+                <button className="float-right" onClick={() => setError(null)}>
+                  <X size={16} />
+                </button>
+              </div>
+            )}
+
             {loading ? (
               <div className="text-center py-8">Loading FAQs...</div>
-            ) : error ? (
-              <div className="text-center text-red-500 py-8">{error}</div>
             ) : faqs.length === 0 ? (
               <div className="text-center py-8">No FAQs available</div>
             ) : (
@@ -170,7 +282,7 @@ const LegalPolicy = () => {
                               <X size={16} className="mr-1" /> Cancel
                             </button>
                             <button
-                              className="flex items-center bg-green-600 text-white px-3 py-1 rounded"
+                              className="flex items-center bg-blue-500 text-white px-3 py-1 rounded"
                               onClick={handleSaveEdit}
                             >
                               <Save size={16} className="mr-1" /> Save
