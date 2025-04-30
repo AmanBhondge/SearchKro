@@ -55,8 +55,8 @@ export const dailyAnalytics = () => {
 };
 
 //FAQ end points
-export const postFaqs = () => {
-  return Api.post("/api/faq");
+export const postFaqs = (data) => {
+  return Api.post("/api/faq", data);
 };
 
 export const getFaqs = () => {
