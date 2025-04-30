@@ -107,10 +107,10 @@ const Sidebar = () => {
       )}
 
       <div
-        className={`h-screen bg-[#191919] text-white flex flex-col p-4 transition-all ${transitionDuration} ${transitionTiming} ${isMobile
+        className={`bg-[#191919] text-white flex flex-col p-4 transition-all ${transitionDuration} ${transitionTiming} ${isMobile
             ? isOpen ? 'translate-x-0' : '-translate-x-full'
             : collapsed ? 'w-[82px] 2xl:w-[100px]' : 'w-[240px] 2xl:w-[300px]'
-          } ${isMobile ? 'fixed left-0 top-0 z-40' : ''} sm:h-full`}
+          } ${isMobile ? 'fixed left-0 top-0 z-40 h-screen' : 'h-screen sticky top-0'}`}
       >
         <div className="mt-[12%] flex items-center gap-[4px] ml-[11px] relative">
           <img src={Logo} alt="Logo" className="w-[45px] 2xl:w-[50px] h-[34.13px] 2xl:h-[38px]" />
@@ -130,7 +130,7 @@ const Sidebar = () => {
             )}
           </div>
         </div>
-        <nav className={`flex-1 mt-6 overflow-y-auto ${isMobile ? 'max-h-[calc(100vh-300px)]' : ''}`}>
+        <nav className="flex-1 mt-6 overflow-y-auto">
           {menuItems.map((item) => (
             <div
               key={item.name}
@@ -157,18 +157,20 @@ const Sidebar = () => {
             </div>
           ))}
         </nav>
-        <button
-          onClick={handleLogoutClick}
-          className={`mb-[10%] sm:mb-[20%] lg:mb-[30%] transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && collapsed ? 'w-[48px] 2xl:w-[55px] justify-center' : 'w-[192px] 2xl:w-[260px] space-x-3'
-            } h-[48px] 2xl:h-[55px] bg-[#474747] rounded-lg cursor-pointer flex items-center text-[#D9D9D9] hover:text-white`}
-        >
-          <FiLogOut className={`w-5 h-5 transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && !collapsed || isMobile ? 'ml-4' : ''}`} />
-          <div className={`transition-all ${transitionDuration} ${transitionTiming} ${(!isMobile && collapsed) ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
-            {((!isMobile && !collapsed) || isMobile) && (
-              <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] 2xl:text-[20px] text-white">Logout</span>
-            )}
-          </div>
-        </button>
+        <div className="mt-auto mb-6">
+          <button
+            onClick={handleLogoutClick}
+            className={`transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && collapsed ? 'w-[48px] 2xl:w-[55px] justify-center' : 'w-[192px] 2xl:w-[260px] space-x-3'
+              } h-[48px] 2xl:h-[55px] bg-[#474747] rounded-lg cursor-pointer flex items-center text-[#D9D9D9] hover:text-white`}
+          >
+            <FiLogOut className={`w-5 h-5 transition-all ${transitionDuration} ${transitionTiming} ${!isMobile && !collapsed || isMobile ? 'ml-4' : ''}`} />
+            <div className={`transition-all ${transitionDuration} ${transitionTiming} ${(!isMobile && collapsed) ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+              {((!isMobile && !collapsed) || isMobile) && (
+                <span style={{ fontWeight: "700", lineHeight: "24px" }} className="text-[16px] 2xl:text-[20px] text-white">Logout</span>
+              )}
+            </div>
+          </button>
+        </div>
 
         <Logout
           isOpen={showLogoutConfirmation}

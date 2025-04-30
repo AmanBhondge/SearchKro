@@ -28,7 +28,7 @@ const WelcomeBack = () => {
             if (response.data && response.data.token) {
                 const Cookies = (await import('js-cookie')).default;
                 Cookies.set("Token", response.data.token);
-
+                Cookies.set("Id", response.data._id);
                 navigate("/main-dashboard"); 
             } else {
                 setErrorMessage("Login failed. Please try again.");

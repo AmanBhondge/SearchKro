@@ -44,6 +44,16 @@ export const resetPassword = (post) => {
   return Api.post("/api/user/resetPassword", post);
 };
 
+//Dashboard end points
+
+export const categroryInsights = () => {
+  return Api.get("api/category/insights/time-series");
+};
+
+export const dailyAnalytics = () => {
+  return Api.get("api/admin/user/userAnalytics");
+};
+
 //FAQ end points
 export const postFaqs = () => {
   return Api.post("/api/faq");
@@ -70,6 +80,9 @@ export const getUserById = (id) => {
   return Api.get(`/api/admin/user/getUserById?id=${id}`);
 };
 
+export const updateProfile = (post) => {
+  return Api.put(`/api/user/updateProfile`, post);
+};
 
 export const updateUserById = (id, userData) =>{
     return Api.put(`/api/admin/user/editProfile/${id}`, userData);
