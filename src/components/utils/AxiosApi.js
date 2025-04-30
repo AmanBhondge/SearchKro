@@ -84,9 +84,9 @@ export const updateProfile = (post) => {
   return Api.put(`/api/user/updateProfile`, post);
 };
 
-export const updateUserById = (id, userData) =>{
-    return Api.put(`/api/admin/user/editProfile/${id}`, userData);
-}
+export const updateUserById = (id, userData) => {
+  return Api.put(`/api/admin/user/editProfile/${id}`, userData);
+};
 
 //Categories end points
 export const getCategories = () => {
@@ -102,6 +102,15 @@ export const updateCategory = (categoryData) => {
 };
 
 export const deleteCategory = (index) => {
-  const encodedIndex = encodeURIComponent(index); 
+  const encodedIndex = encodeURIComponent(index);
   return Api.delete(`/api/category/deleteCategory?index=${encodedIndex}`);
+};
+
+//Banner endpoints
+export const getAllBanners = () => {
+  return Api.get("/api/admin/banner/getAllBanners");
+};
+
+export const editBanner = (id, post) => {
+  return Api.put(`/api/admin/banner/updateBanner/${id}`, post);
 };
