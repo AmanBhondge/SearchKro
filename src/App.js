@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Categories from './components/Dash-board/Categories/Categories';
 import LegalPolicy from './components/Dash-board/Legal-policy/LegalPolicy';
-import Location from './components/Dash-board/Location/Location';
 import MainDashboard from './components/Dash-board/Main-dashboard/MainDashboard';
 import Reportes from './components/Dash-board/Reportes/Reportes';
 import Rating from './components/Dash-board/Rating/Rating';
@@ -17,6 +16,7 @@ import UserDetailsPage from './components/Dash-board/User-management/UserDetailP
 import ProtectedRoute from './components/Auth/ProtectedRoute';
 import SubCategories from './components/Dash-board/Categories/categoryComponents/Subcategories';
 import EditCategory from './components/Dash-board/Categories/categoryComponents/EditCategory';
+import Banner from './components/Dash-board/Banner/Banner';
 
 const App = () => {
   return (
@@ -35,7 +35,7 @@ const App = () => {
           <Route path='/categories/:id' element={<SubCategories/>}/>
           <Route path='/edit-category/:id' element={<EditCategory/>}/>
           <Route path="/legal-policy" element={<LegalPolicy />} />
-          <Route path="/location" element={<Location />} />
+          <Route path="/banner" element={<Banner/>} />
           <Route path="/main-dashboard" element={<MainDashboard />} />
           <Route path="/reportes" element={<Reportes />} />
           <Route path="/rating" element={<Rating />} />

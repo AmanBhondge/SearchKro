@@ -7,6 +7,7 @@ import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { GoShieldLock } from "react-icons/go";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { FiLogOut } from "react-icons/fi";
+import { CiImageOn } from "react-icons/ci";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import Logo from "../../../Assets/Logo.png";
 import Logout from "../Pop-ups/Logout";
@@ -70,7 +71,7 @@ const Sidebar = () => {
     else if (path.includes("user")) setActive("Users");
     else if (path.includes("reportes")) setActive("Reports");
     else if (path.includes("policy")) setActive("Legal Policy");
-    else if (path.includes("location")) setActive("Location");
+    else if (path.includes("banner")) setActive("Banner");
     else if (path.includes("rating")) setActive("Rating");
     else setActive("Dashboard");
   }, [location]);
@@ -98,9 +99,9 @@ const Sidebar = () => {
       navigate: "/legal-policy",
     },
     {
-      name: "Location",
-      icon: <HiOutlineLocationMarker size={22} />,
-      navigate: "/location",
+      name: "Banner",
+      icon: <CiImageOn size={22} />,
+      navigate: "/banner",
     },
     {
       name: "Rating",
