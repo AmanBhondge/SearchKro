@@ -15,6 +15,7 @@ const User = () => {
     try {
       setLoading(true);
       const response = await getAllusers();
+      console.log("user",response.data)
       setAllUsers(response.data.data);
       setLoading(false);
     } catch (error) {
@@ -74,7 +75,6 @@ const User = () => {
     </span>
   );
 
-  // Block Status Component
   const BlockStatus = ({ isBlocked }) => (
     <span
       className={`px-2 md:px-4 py-1 rounded-full inline-flex items-center justify-center text-xs sm:text-sm md:text-base 2xl:text-lg whitespace-nowrap ${

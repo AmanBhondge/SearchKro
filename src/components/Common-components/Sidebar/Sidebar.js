@@ -4,8 +4,7 @@ import { TbCategory2 } from "react-icons/tb";
 import { RxDashboard } from "react-icons/rx";
 import { IoIosStarOutline } from "react-icons/io";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
-import { GoShieldLock } from "react-icons/go";
-import { HiOutlineLocationMarker } from "react-icons/hi";
+import { CiCircleQuestion } from "react-icons/ci";
 import { FiLogOut } from "react-icons/fi";
 import { CiImageOn } from "react-icons/ci";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -70,7 +69,7 @@ const Sidebar = () => {
     else if (path.includes("categories")) setActive("Categories");
     else if (path.includes("user")) setActive("Users");
     else if (path.includes("reportes")) setActive("Reports");
-    else if (path.includes("policy")) setActive("Legal Policy");
+    else if (path.includes("faq")) setActive("FAQ's");
     else if (path.includes("banner")) setActive("Banner");
     else if (path.includes("rating")) setActive("Rating");
     else setActive("Dashboard");
@@ -94,9 +93,9 @@ const Sidebar = () => {
       navigate: "/reportes",
     },
     {
-      name: "Legal Policy",
-      icon: <GoShieldLock size={22} />,
-      navigate: "/legal-policy",
+      name: "FAQ's",
+      icon: <CiCircleQuestion size={22} />,
+      navigate: "/faq",
     },
     {
       name: "Banner",
@@ -150,9 +149,10 @@ const Sidebar = () => {
         }`}
       >
         <div className="mt-[12%] flex items-center gap-[4px] ml-[11px] relative">
-          <div className="w-[34px] h-[34.13px] text-xl bg-white text-black font-extrabold flex items-center justify-center rounded-full">
+          {/* <div className="w-[34px] h-[34.13px] text-xl bg-white text-black font-extrabold flex items-center justify-center rounded-full">
             C
-          </div>
+          </div> */}
+          <img src={Logo} alt="Logo" className="w-[45px] 2xl:w-[50px] h-[34.13px] 2xl:h-[38px]" />
           <div
             className={`transition-all ${transitionDuration} ${transitionTiming} ${
               collapsed && !isMobile

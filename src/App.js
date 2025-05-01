@@ -35,7 +35,7 @@ const App = () => {
           <Route path=':categoryId' element={<SubCategories/>}/>
           <Route path='/post-category' element={<CategoryForm/>}/>
           <Route path='/edit-category/:categoryId' element={<EditCategory/>}/>
-          <Route path="/legal-policy" element={<LegalPolicy />} />
+          <Route path="/faq" element={<LegalPolicy />} />
           <Route path="/banner" element={<Banner/>} />
           <Route path="/main-dashboard" element={<MainDashboard />} />
           <Route path="/reportes" element={<Reportes />} />

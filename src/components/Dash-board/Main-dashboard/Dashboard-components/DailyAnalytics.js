@@ -68,16 +68,21 @@ const DailyAnalytics = () => {
     "Nov",
     "Dec",
   ];
-  const currentMonth = new Date().getMonth();
+  const currentMonth = new Date().getMonth(); // 0-based (0 = January)
 
-  // Growth chart data
+  // Format the monthlyRegistrations data for the chart
   const growthChartData = months.map((month, idx) => {
-    // Add a null check for monthlyRegistrations
-    const monthData = analyticsData.monthlyRegistrations ? 
-      analyticsData.monthlyRegistrations.find(
-        (m) => m._id && m._id.month === idx + 1 && m._id.year === 2025
-      ) : null;
+    // Convert to 1-based month number for matching with API data format
+    const monthNum = idx + 1;
+    // Format month number to match API format (MM-YYYY)
+    const monthFormatted = String(monthNum).padStart(2, '0') + '-2025';
+    
+    // Find registration data for this month
+    const monthData = analyticsData.monthlyRegistrations.find(
+      (m) => m.month === monthFormatted
+    );
 
+    // Create chart data point
     return {
       name: month,
       users: monthData ? monthData.count : 0,

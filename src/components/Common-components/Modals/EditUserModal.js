@@ -152,7 +152,7 @@ const EditUserModal = ({
             </div>
             
             {renderInput("name", "Name", editedUser.name, handleInputChange)}
-            {renderInput("profile", "Profile URL", editedUser.profile, handleInputChange)}
+            {/* {renderInput("profile", "Profile URL", editedUser.profile, handleInputChange)} */}
             
             {renderSelect("role", "Role", editedUser.role, handleInputChange, [
               ["buyer", "Buyer"],
@@ -184,7 +184,7 @@ const EditUserModal = ({
             {renderCheckbox("isDeliveryAvailable", "Delivery Available", editedUser.isDeliveryAvailable, handleCheckboxChange)}
             
             
-            {/* <div className="col-span-1 md:col-span-2 mt-2">
+            <div className="col-span-1 md:col-span-2 mt-2">
               <h4 className="text-md font-medium mb-2">Business Address</h4>
             </div>
             
@@ -223,7 +223,7 @@ const EditUserModal = ({
             {renderInput("instagramUrl", "Instagram URL", editedUser.instagramUrl, handleInputChange)}
             {renderInput("youtubeUrl", "YouTube URL", editedUser.youtubeUrl, handleInputChange)}
             {renderInput("websiteUrl", "Website URL", editedUser.websiteUrl, handleInputChange)}
-             */}
+            
             {/* Account Status */}
             <div className="col-span-1 md:col-span-2 mt-4 mb-2">
               <h3 className="text-lg font-semibold mb-2">Account Status</h3>
@@ -232,7 +232,6 @@ const EditUserModal = ({
             
             <div className="grid grid-cols-2 gap-4 col-span-2">
               {renderCheckbox("isActive", "Active", editedUser.isActive, handleCheckboxChange)}
-              {renderCheckbox("isBlocked", "Blocked", editedUser.isBlocked, handleCheckboxChange)}
               {renderCheckbox("isVerified", "Email Verified", editedUser.isVerified, handleCheckboxChange)}
               {renderCheckbox("isDeactivated", "Deactivated", editedUser.isDeactivated, handleCheckboxChange)}
             </div>
