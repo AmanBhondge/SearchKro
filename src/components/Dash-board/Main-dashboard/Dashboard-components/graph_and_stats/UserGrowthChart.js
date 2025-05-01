@@ -31,7 +31,7 @@ const UserGrowthChart = ({ data }) => {
                 <stop offset="95%" stopColor="#191919" stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="colorVerified" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="white" stopOpacity={0.8} />
+                <stop offset="5%" stopColor="gray" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="white" stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="colorActiveToday" x1="0" y1="0" x2="0" y2="1">

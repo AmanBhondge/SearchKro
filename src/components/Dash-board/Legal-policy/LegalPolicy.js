@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../../Common-components/Sidebar/Sidebar";
 import Navbar from "../../Common-components/Navbar/Navbar";
 import { ChevronRight, X, Plus, Pencil, Save, Trash2 } from "lucide-react";
-import { getFaqs, UpdateFaqs, DeleteFaqs, postFaqs } from "../../utils/AxiosApi";
+import {
+  getFaqs,
+  UpdateFaqs,
+  DeleteFaqs,
+  postFaqs,
+} from "../../utils/AxiosApi";
 
 const LegalPolicy = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,9 +48,6 @@ const LegalPolicy = () => {
     }
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
 
   const handleEditClick = (faq) => {
     setEditMode(true);
@@ -165,7 +166,7 @@ const LegalPolicy = () => {
           <div className="w-full max-w-4xl 2xl:max-w-full 2xl:px-12 mx-auto">
             <div className="mb-4 flex justify-end">
               <button
-                className="flex items-center  text-white px-4 py-2 rounded-lg bg-black"
+                className="flex items-center  text-white px-4 py-2 rounded-lg bg-[#191919]"
                 onClick={toggleAddForm}
               >
                 <Plus size={18} className="mr-2" /> Add New FAQ
@@ -220,7 +221,7 @@ const LegalPolicy = () => {
                       <X size={16} className="mr-2" /> Cancel
                     </button>
                     <button
-                      className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+                      className="flex items-center  text-white px-4 py-2 rounded-lg bg-gray-800"
                       onClick={handleAddFaq}
                     >
                       <Save size={16} className="mr-2" /> Save
@@ -282,7 +283,7 @@ const LegalPolicy = () => {
                               <X size={16} className="mr-1" /> Cancel
                             </button>
                             <button
-                              className="flex items-center bg-blue-500 text-white px-3 py-1 rounded"
+                              className="flex items-center bg-[#06C4D9] text-white px-3 py-1 rounded"
                               onClick={handleSaveEdit}
                             >
                               <Save size={16} className="mr-1" /> Save

@@ -17,12 +17,12 @@ import ProtectedRoute from './components/Auth/ProtectedRoute';
 import SubCategories from './components/Dash-board/Categories/categoryComponents/Subcategories';
 import EditCategory from './components/Dash-board/Categories/categoryComponents/EditCategory';
 import Banner from './components/Dash-board/Banner/Banner';
+import CategoryForm from './components/Dash-board/Categories/categoryComponents/CategoryForm';
 
 const App = () => {
   return (
     <div>
       <Routes>
-        {/* Public routes */}
         <Route path="/" element={<WelcomeBack />} />
         <Route path="/create-account" element={<CreateAccount />} />
         <Route path="/verify-forgot-password-reset" element={<VerifyForgotPasswordOtp />} />
@@ -32,8 +32,9 @@ const App = () => {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/categories" element={<Categories />} />
-          <Route path='/categories/:id' element={<SubCategories/>}/>
-          <Route path='/edit-category/:id' element={<EditCategory/>}/>
+          <Route path=':categoryId' element={<SubCategories/>}/>
+          <Route path='/post-category' element={<CategoryForm/>}/>
+          <Route path='/edit-category/:categoryId' element={<EditCategory/>}/>
           <Route path="/legal-policy" element={<LegalPolicy />} />
           <Route path="/banner" element={<Banner/>} />
           <Route path="/main-dashboard" element={<MainDashboard />} />

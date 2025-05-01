@@ -71,7 +71,6 @@ const EditUserModal = ({
     }
   };
 
-  // Helper render functions
   const renderInput = (name, label, value, onChange, type = "text") => (
     <div className="mb-3">
       <label className="block text-sm font-medium mb-1">{label}</label>
@@ -184,8 +183,8 @@ const EditUserModal = ({
             
             {renderCheckbox("isDeliveryAvailable", "Delivery Available", editedUser.isDeliveryAvailable, handleCheckboxChange)}
             
-            {/* Business Address */}
-            <div className="col-span-1 md:col-span-2 mt-2">
+            
+            {/* <div className="col-span-1 md:col-span-2 mt-2">
               <h4 className="text-md font-medium mb-2">Business Address</h4>
             </div>
             
@@ -206,7 +205,6 @@ const EditUserModal = ({
               />
             </div>
             
-            {/* Contact Information */}
             <div className="col-span-1 md:col-span-2 mt-4 mb-2">
               <h3 className="text-lg font-semibold mb-2">Contact Information</h3>
               <div className="border-t border-gray-200"></div>
@@ -215,7 +213,6 @@ const EditUserModal = ({
             {renderInput("contactNumber", "Contact Number", editedUser.contactNumber, handleInputChange)}
             {renderInput("contactEmail", "Contact Email", editedUser.contactEmail, handleInputChange, "email")}
             
-            {/* Online Presence */}
             <div className="col-span-1 md:col-span-2 mt-4 mb-2">
               <h3 className="text-lg font-semibold mb-2">Online Presence</h3>
               <div className="border-t border-gray-200"></div>
@@ -226,7 +223,7 @@ const EditUserModal = ({
             {renderInput("instagramUrl", "Instagram URL", editedUser.instagramUrl, handleInputChange)}
             {renderInput("youtubeUrl", "YouTube URL", editedUser.youtubeUrl, handleInputChange)}
             {renderInput("websiteUrl", "Website URL", editedUser.websiteUrl, handleInputChange)}
-            
+             */}
             {/* Account Status */}
             <div className="col-span-1 md:col-span-2 mt-4 mb-2">
               <h3 className="text-lg font-semibold mb-2">Account Status</h3>
@@ -251,7 +248,7 @@ const EditUserModal = ({
           </button>
           <button 
             onClick={handleUpdateUser} 
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center gap-2"
+            className="px-4 py-2 bg-[#06C4D9] text-white rounded-md hover:bg-[#191919] flex items-center gap-2"
             disabled={updating}
           >
             {updating ? <FaSpinner className="animate-spin" /> : <FaSave />}

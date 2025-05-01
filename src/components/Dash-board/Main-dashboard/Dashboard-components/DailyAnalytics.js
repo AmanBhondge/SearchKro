@@ -11,6 +11,7 @@ import { dailyAnalytics } from "../../../utils/AxiosApi";
 import StatCard from "./graph_and_stats/StatCard";
 import UserGrowthChart from "./graph_and_stats/UserGrowthChart";
 import BuyerAndSellerGraph from "./graph_and_stats/BuyerAndSellerGraph";
+import TrendingItems from "./graph_and_stats/TrendingItems";
 
 const DailyAnalytics = () => {
   const [analyticsData, setAnalyticsData] = useState(null);
@@ -71,64 +72,65 @@ const DailyAnalytics = () => {
 
   // Growth chart data
   const growthChartData = months.map((month, idx) => {
-    const monthData = analyticsData.monthlyRegistrations?.find(
-      (m) => m._id.month === idx + 1 && m._id.year === 2025
-    );
+    // Add a null check for monthlyRegistrations
+    const monthData = analyticsData.monthlyRegistrations ? 
+      analyticsData.monthlyRegistrations.find(
+        (m) => m._id && m._id.month === idx + 1 && m._id.year === 2025
+      ) : null;
 
     return {
       name: month,
       users: monthData ? monthData.count : 0,
-      active: idx === currentMonth ? analyticsData.activeThisMonth : 0,
-      verified: idx === currentMonth ? analyticsData.verifiedUsers : 0,
-      activeToday: idx === currentMonth ? analyticsData.activeToday : 0,
+      active: idx === currentMonth ? analyticsData.activeThisMonth || 0 : 0,
+      verified: idx === currentMonth ? analyticsData.verifiedUsers || 0 : 0,
+      activeToday: idx === currentMonth ? analyticsData.activeToday || 0 : 0,
     };
   });
 
-  // Data for Pie Chart - Buyers vs Sellers
   const pieData = [
-    { name: "Buyers", value: analyticsData.totalBuyers, fill: "#06C4D9" },
-    { name: "Sellers", value: analyticsData.totalSellers, fill: "#191919" },
+    { name: "Buyers", value: analyticsData.totalBuyers || 0, fill: "#06C4D9" },
+    { name: "Sellers", value: analyticsData.totalSellers || 0, fill: "#191919" },
   ];
 
   const cards = [
     {
       title: "Total Users",
-      value: analyticsData.totalUsers,
+      value: analyticsData.totalUsers || 0,
       icon: <FaUsers className="text-zinc-800" />,
       bgGradient: "from-[#191919] to-zinc-600",
       textColor: "text-[#06C4D9]",
     },
     {
       title: "Verified Users",
-      value: analyticsData.verifiedUsers,
+      value: analyticsData.verifiedUsers || 0,
       icon: <FaUserCheck className="text-zinc-800" />,
       bgGradient: "from-[#191919] to-zinc-600",
       textColor: "text-[#06C4D9]",
     },
     {
       title: "Active Today",
-      value: analyticsData.activeToday,
+      value: analyticsData.activeToday || 0,
       icon: <FaUserClock className="text-zinc-800" />,
       bgGradient: "from-[#191919] to-zinc-600",
       textColor: "text-[#06C4D9]",
     },
     {
       title: "Active This Month",
-      value: analyticsData.activeThisMonth,
+      value: analyticsData.activeThisMonth || 0,
       icon: <FaCalendarAlt className="text-zinc-800" />,
       bgGradient: "from-[#191919] to-zinc-600",
       textColor: "text-[#06C4D9]",
     },
     {
       title: "Total Buyers",
-      value: analyticsData.totalBuyers,
+      value: analyticsData.totalBuyers || 0,
       icon: <HiShoppingCart className="text-zinc-800" />,
       bgGradient: "from-[#191919] to-zinc-600",
       textColor: "text-[#06C4D9]",
     },
     {
       title: "Total Sellers",
-      value: analyticsData.totalSellers,
+      value: analyticsData.totalSellers || 0,
       icon: <HiCurrencyDollar className="text-zinc-800" />,
       bgGradient: "from-[#191919] to-zinc-600",
       textColor: "text-[#06C4D9]",
@@ -146,6 +148,7 @@ const DailyAnalytics = () => {
         </div>
       </div>
       <UserGrowthChart data={growthChartData} />
+      <TrendingItems/>
     </div>
   );
 };

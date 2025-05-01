@@ -3,11 +3,13 @@ import { getAllBanners } from "../../utils/AxiosApi";
 import Sidebar from "../../Common-components/Sidebar/Sidebar";
 import Navbar from "../../Common-components/Navbar/Navbar";
 import BannerEditModal from "../../Common-components/Modals/BannerEditModal";
+import PostBannerModal from "../../Common-components/Modals/PostBannerModal";
 
 const Banner = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const [selectedBanner, setSelectedBanner] = useState(null);
 
   const allBanners = async () => {
@@ -33,19 +35,29 @@ const Banner = () => {
   };
 
   const handleEditSuccess = (updatedBanner) => {
-    // Update the specific banner in the data array
     setData(prevData => 
-      prevData.map(banner => 
-        banner._id === updatedBanner._id ? updatedBanner : banner
-      )
+      prevData.map(banner => {
+        if (banner._id === updatedBanner._id) {
+          if (updatedBanner.image) {
+            const timestamp = new Date().getTime();
+            if (!updatedBanner.image.startsWith('data:')) {
+              updatedBanner.image = updatedBanner.image.includes('?') 
+                ? updatedBanner.image 
+                : `${updatedBanner.image}?t=${timestamp}`;
+            }
+          }
+          return updatedBanner;
+        }
+        return banner;
+      })
     );
-    
-    // Close the modal
     setIsEditModalOpen(false);
+  };
+
+  const handlePostSuccess = (newBanner) => {
+    setData(prevData => [newBanner, ...prevData]);
     
-    // Additionally, refresh the banner list from server
-    // This ensures our local state matches server state
-    allBanners();
+    setIsPostModalOpen(false);
   };
 
   return (
@@ -68,6 +80,30 @@ const Banner = () => {
 
         {/* Banner Content */}
         <div className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 2xl:p-10">
+          {/* Add Banner Button */}
+          <div className="mb-6">
+            <button
+              onClick={() => setIsPostModalOpen(true)}
+              className="bg-[#191919] text-white px-4 py-2 rounded-md flex items-center shadow-md transition-all duration-300"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                ></path>
+              </svg>
+              Add New Banner
+            </button>
+          </div>
+
           {loading ? (
             <div className="flex items-center justify-center h-full">
               <p className="text-lg">Loading banners...</p>
@@ -78,56 +114,72 @@ const Banner = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {data.map((banner, index) => (
-                <div
-                  key={banner._id}
-                  className="bg-white rounded-lg shadow border overflow-hidden transition-transform duration-300 hover:shadow-lg hover:transform hover:scale-105"
-                >
-                  <div className="relative aspect-video">
-                    <img
-                      src={banner.image}
-                      alt={`Banner ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                    {banner.isActive && (
-                      <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-md text-sm">
-                        Active
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-4">
-                    <div className="flex justify-between items-center">
-                      <p className="text-sm text-gray-500">ID: {banner._id.slice(-6)}</p>
-                      <p className="text-sm text-gray-500">
-                        {new Date(banner.createdAt).toLocaleDateString()}
-                      </p>
+              {data.map((banner, index) => {
+                const imgSrc = banner.image && !banner.image.startsWith('data:') 
+                  ? banner.image.includes('?') 
+                    ? banner.image 
+                    : `${banner.image}?t=${new Date().getTime()}`
+                  : banner.image;
+                
+                return (
+                  <div
+                    key={banner._id}
+                    className="bg-white rounded-lg shadow border overflow-hidden transition-transform duration-300 hover:shadow-lg hover:transform hover:scale-105"
+                  >
+                    <div className="relative aspect-video">
+                      <img
+                        src={imgSrc}
+                        alt={`Banner ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = "https://via.placeholder.com/300x150?text=Image+Not+Found";
+                        }}
+                      />
+                      {banner.isActive && (
+                        <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-md text-sm">
+                          Active
+                        </div>
+                      )}
                     </div>
-                    <div className="flex justify-between items-center mt-3">
-                      <div className="flex items-center">
-                        <div className={`w-3 h-3 rounded-full ${banner.isActive ? "bg-green-500" : "bg-red-500"}`}></div>
-                        <span className="ml-2 text-sm">{banner.isActive ? "Active" : "Inactive"}</span>
+                    <div className="p-4">
+                      <div className="flex justify-between items-center">
+                        <p className="text-sm text-gray-500">ID: {banner._id.slice(-6)}</p>
+                        <p className="text-sm text-gray-500">
+                          {new Date(banner.createdAt).toLocaleDateString()}
+                        </p>
                       </div>
-                      <button 
-                        onClick={() => handleEditClick(banner)}
-                        className="text-blue-600 hover:text-blue-800 text-sm"
-                      >
-                        Edit Banner
-                      </button>
+                      <div className="flex justify-between items-center mt-3">
+                        <div className="flex items-center">
+                          <div className={`w-3 h-3 rounded-full ${banner.isActive ? "bg-green-500" : "bg-red-500"}`}></div>
+                          <span className="ml-2 text-sm">{banner.isActive ? "Active" : "Inactive"}</span>
+                        </div>
+                        <button 
+                          onClick={() => handleEditClick(banner)}
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          Edit Banner
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
       </div>
-
-      {/* Edit Modal */}
       <BannerEditModal 
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         banner={selectedBanner}
         onSuccess={handleEditSuccess}
+      />
+  
+      <PostBannerModal
+        isOpen={isPostModalOpen}
+        onClose={() => setIsPostModalOpen(false)}
+        onSuccess={handlePostSuccess}
       />
     </div>
   );
