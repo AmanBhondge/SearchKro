@@ -14,6 +14,7 @@ const Logout = ({ isOpen, onClose }) => {
 
   const handleLogout = () => {
     Cookies.remove("Token");
+    Cookies.remove("Id");
     navigate("/");
   };
 

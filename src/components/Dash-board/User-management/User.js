@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../Common-components/Sidebar/Sidebar";
 import Navbar from "../../Common-components/Navbar/Navbar";
-import { getAllusers } from '../../utils/AxiosApi';
+import { getAllusers } from "../../utils/AxiosApi";
 import { FaSpinner } from "react-icons/fa";
 
 const User = () => {
@@ -33,15 +33,16 @@ const User = () => {
   };
 
   // Filter users based on view type
-  const filteredUsers = viewType === "all" 
-    ? allUsers 
-    : allUsers.filter(user => user.role === viewType);
+  const filteredUsers =
+    viewType === "all"
+      ? allUsers
+      : allUsers.filter((user) => user.role === viewType);
 
   // Verification Status Component
   const VerificationStatus = ({ status }) => {
     const isVerified = status === true || status === "approved";
     const isPending = status === "pending";
-    
+
     if (isPending) {
       return (
         <span className="bg-yellow-100 text-yellow-600 px-2 md:px-4 py-1 rounded-full inline-flex items-center justify-center text-xs sm:text-sm md:text-base 2xl:text-lg whitespace-nowrap">
@@ -49,13 +50,13 @@ const User = () => {
         </span>
       );
     }
-    
+
     return (
-      <span className={`px-2 md:px-4 py-1 rounded-full inline-flex items-center justify-center text-xs sm:text-sm md:text-base 2xl:text-lg whitespace-nowrap ${
-        isVerified 
-          ? "bg-green-100 text-green-600" 
-          : "bg-red-100 text-red-600"
-      }`}>
+      <span
+        className={`px-2 md:px-4 py-1 rounded-full inline-flex items-center justify-center text-xs sm:text-sm md:text-base 2xl:text-lg whitespace-nowrap ${
+          isVerified ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
+        }`}
+      >
         {isVerified ? "Verified " : "Not Verified "}
         <span className="ml-1">{isVerified ? "✓" : "✗"}</span>
       </span>
@@ -64,22 +65,22 @@ const User = () => {
 
   // Status Indicator Component
   const StatusIndicator = ({ isActive }) => (
-    <span className={`px-2 md:px-4 py-1 rounded-full inline-flex items-center justify-center text-xs sm:text-sm md:text-base 2xl:text-lg whitespace-nowrap ${
-      isActive 
-        ? "bg-green-100 text-green-600" 
-        : "bg-gray-100 text-gray-600"
-    }`}>
+    <span
+      className={`px-2 md:px-4 py-1 rounded-full inline-flex items-center justify-center text-xs sm:text-sm md:text-base 2xl:text-lg whitespace-nowrap ${
+        isActive ? "bg-green-100 text-green-600" : "bg-gray-100 text-gray-600"
+      }`}
+    >
       {isActive ? "Active" : "Inactive"}
     </span>
   );
 
   // Block Status Component
   const BlockStatus = ({ isBlocked }) => (
-    <span className={`px-2 md:px-4 py-1 rounded-full inline-flex items-center justify-center text-xs sm:text-sm md:text-base 2xl:text-lg whitespace-nowrap ${
-      isBlocked 
-        ? "bg-red-100 text-red-600" 
-        : "bg-green-100 text-green-600"
-    }`}>
+    <span
+      className={`px-2 md:px-4 py-1 rounded-full inline-flex items-center justify-center text-xs sm:text-sm md:text-base 2xl:text-lg whitespace-nowrap ${
+        isBlocked ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"
+      }`}
+    >
       {isBlocked ? "Blocked" : "Not Blocked"}
     </span>
   );
@@ -105,20 +106,20 @@ const User = () => {
               </h1>
               <div className="flex items-center">
                 <div className="bg-gray-200 rounded-full p-1 flex">
-                  <button 
+                  <button
                     className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-                      viewType === "buyer" 
-                        ? "bg-[#191919] text-white" 
+                      viewType === "buyer"
+                        ? "bg-[#191919] text-white"
                         : "bg-transparent text-gray-700"
                     }`}
                     onClick={() => setViewType("buyer")}
                   >
                     Buyer
                   </button>
-                  <button 
+                  <button
                     className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
-                      viewType === "seller" 
-                        ? "bg-[#191919] text-white" 
+                      viewType === "seller"
+                        ? "bg-[#191919] text-white"
                         : "bg-transparent text-gray-700"
                     }`}
                     onClick={() => setViewType("seller")}
@@ -127,10 +128,10 @@ const User = () => {
                   </button>
                 </div>
                 <div className="ml-2">
-                  <button 
+                  <button
                     className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                      viewType === "all" 
-                        ? "bg-[#191919] text-white" 
+                      viewType === "all"
+                        ? "bg-[#191919] text-white"
                         : "bg-gray-300 text-gray-700 hover:bg-gray-400"
                     }`}
                     onClick={() => setViewType("all")}
@@ -150,32 +151,52 @@ const User = () => {
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="bg-white text-black border-b text-base sm:text-lg 2xl:text-2xl">
-                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">Name</th>
-                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">Email</th>
-                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">Mobile Number</th>
-                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">Verified Status</th>
-                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">isActive</th>
-                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">isBlocked</th>
+                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">
+                        Name
+                      </th>
+                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">
+                        Email
+                      </th>
+                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">
+                        Mobile Number
+                      </th>
+
+                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">
+                        isActive
+                      </th>
+                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">
+                        isBlocked
+                      </th>
+                      <th className="text-left py-3 md:py-4 px-2 md:px-6 font-bold">
+                        Verified Status
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredUsers.map((user, index) => (
-                      <tr 
-                        key={user._id} 
+                      <tr
+                        key={user._id}
                         className="border-b border-gray-200 hover:bg-gray-50 transition-all text-sm sm:text-base md:text-lg 2xl:text-xl cursor-pointer"
                         onClick={() => handleUserClick(user._id)}
                       >
-                        <td className="py-2 md:py-4 px-2 md:px-6">{user.name}</td>
-                        <td className="py-2 md:py-4 px-2 md:px-6">{user.email}</td>
-                        <td className="py-2 md:py-4 px-2 md:px-6">{user.mobile || "N/A"}</td>
                         <td className="py-2 md:py-4 px-2 md:px-6">
-                          <VerificationStatus status={user.isAdminVerified} />
+                          {user.name}
                         </td>
+                        <td className="py-2 md:py-4 px-2 md:px-6">
+                          {user.email}
+                        </td>
+                        <td className="py-2 md:py-4 px-2 md:px-6">
+                          {user.mobile || "N/A"}
+                        </td>
+
                         <td className="py-2 md:py-4 px-2 md:px-6">
                           <StatusIndicator isActive={user.isActive !== false} />
                         </td>
                         <td className="py-2 md:py-4 px-2 md:px-6">
                           <BlockStatus isBlocked={user.isBlocked === true} />
+                        </td>
+                        <td className="py-2 md:py-4 px-2 md:px-6">
+                          <VerificationStatus status={user.isAdminVerified} />
                         </td>
                       </tr>
                     ))}

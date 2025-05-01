@@ -38,12 +38,9 @@ const UserDetailsPage = () => {
     setShowModal(true);
   };
 
-  // Handle successful update from modal
   const handleUpdateSuccess = () => {
     setUpdateMessage({ type: 'success', message: 'User updated successfully!' });
-    fetchUserDetails(); // Refresh user data
-    
-    // Clear message after 3 seconds
+    fetchUserDetails(); 
     setTimeout(() => {
       setUpdateMessage({ type: '', message: '' });
     }, 3000);
@@ -98,7 +95,7 @@ const UserDetailsPage = () => {
           <div className="mb-4 flex justify-between">
             <button
               onClick={() => navigate("/user")}
-              className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-all shadow-md"
+              className="flex items-center gap-2 bg-[#191919] text-white px-4 py-2 rounded-lg transition-all shadow-md"
             >
               <FaArrowLeft /> Back to Users
             </button>
@@ -106,7 +103,7 @@ const UserDetailsPage = () => {
             {!loading && user && (
               <button
                 onClick={handleEditClick}
-                className="flex items-center gap-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-all shadow-md"
+                className="flex items-center gap-2 bg-[#06C4D9] text-white px-4 py-2 rounded-lg transition-all shadow-md"
               >
                 <FaEdit /> Edit User
               </button>
