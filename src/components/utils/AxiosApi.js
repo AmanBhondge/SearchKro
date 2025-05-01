@@ -128,6 +128,18 @@ export const editBanner = (id, post) => {
   return Api.put(`/api/admin/banner/updateBanner/${id}`, post);
 };
 
-export const postBanner = (post) => {
-  return Api.post("/api/user/uploadImage", post);
+export const postBanner = (imageFile) => {
+  return Api.post("/api/user/uploadImage", imageFile);
+};
+
+export const createBanner = (image) => {
+  return Api.post("/api/admin/banner/createBanner", image);
+};
+
+export const getBannerbyId = (id) => {
+  return Api.get(`api/admin/banner/getBannerById?id=${id}`);
+};
+
+export const deleteBannerbyId = (id) => {
+  return Api.delete(`api/admin/banner/deleteBanner/${id}`);
 };

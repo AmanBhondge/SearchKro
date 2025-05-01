@@ -1,224 +1,177 @@
-import React, { useState } from 'react';
-import { postBanner } from '../../utils/AxiosApi';
+import React, { useState } from "react";
+import { postBanner, createBanner } from "../../utils/AxiosApi";
+import { IoMdClose } from "react-icons/io";
+import { MdFileUpload, MdError } from "react-icons/md";
 
 const PostBannerModal = ({ isOpen, onClose, onSuccess }) => {
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [isActive, setIsActive] = useState(true);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState("");
 
-  // Reset form when modal closes
-  React.useEffect(() => {
-    if (!isOpen) {
-      setImage(null);
-      setPreview(null);
-      setError('');
-      setIsActive(true);
-    }
-  }, [isOpen]);
+  if (!isOpen) return null;
 
-  const handleImageChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
-    
     if (!file) return;
-    
-    // Validate file type
-    if (!file.type.includes('image/')) {
-      setError('Please select an image file');
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please select an image file");
       return;
     }
-    
-    // Validate file size (limit to 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setError('Image size should be less than 5MB');
-      return;
-    }
-    
-    setError('');
-    setImage(file);
-    
-    // Create preview
-    const reader = new FileReader();
-    reader.onload = () => {
-      setPreview(reader.result);
-    };
-    reader.readAsDataURL(file);
+
+    setSelectedFile(file);
+    setError("");
+
+    const fileReader = new FileReader();
+    fileReader.onload = () => setPreviewUrl(fileReader.result);
+    fileReader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!image) {
-      setError('Please select an image');
+
+    if (!selectedFile) {
+      setError("Please select an image");
       return;
     }
-    
+
     try {
-      setLoading(true);
-      
-      // Create FormData object to send file with 'image' as the key
+      setIsUploading(true);
+      setError("");
+
       const formData = new FormData();
-      formData.append('image', image);
-      
-      const response = await postBanner(formData);
-      console.log(response);
-      
-      
-      if (response.data && response.data.msg === "Operation successful.") {
-        // Create banner object with the returned image URL
-        const newBanner = {
-          image: response.data.data[0],
-          isActive: isActive,
-          _id: new Date().getTime().toString() // Temporary ID until refresh
-        };
-        
-        if (onSuccess) {
-          onSuccess(newBanner);
+      formData.append("image", selectedFile);
+
+      const uploadResponse = await postBanner(formData);
+
+      if (uploadResponse.data?.data?.length > 0) {
+        const imageUrl = uploadResponse.data.data[0];
+        const createResponse = await createBanner({ image: imageUrl });
+
+        if (createResponse.data?.data) {
+          onSuccess(createResponse.data.data);
+          setSelectedFile(null);
+          setPreviewUrl(null);
+          onClose();
+        } else {
+          setError("Failed to create banner");
         }
-        onClose();
       } else {
-        setError('Failed to upload banner');
+        setError("Failed to upload image");
       }
     } catch (error) {
-      console.error('Error uploading banner:', error);
-      setError(error.response?.data?.message || 'An error occurred while uploading the banner');
+      console.error("Error in banner creation process:", error);
+      setError(
+        error.response?.data?.msg ||
+          "An error occurred while creating the banner"
+      );
     } finally {
-      setLoading(false);
+      setIsUploading(false);
     }
   };
 
-  if (!isOpen) return null;
+  const handleModalClick = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleCloseClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onClose();
+  };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 mx-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">Add New Banner</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto shadow-xl"
+        onClick={handleModalClick}
+      >
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-[#191919]">Add New Banner</h2>
+            <button
+              onClick={handleCloseClick}
+              className="text-gray-500 hover:text-[#191919] transition-colors p-1 rounded-full hover:bg-gray-100"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-        </div>
+              <IoMdClose size={24} />
+            </button>
+          </div>
 
-        <form onSubmit={handleSubmit}>
-          {/* Image Upload */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Banner Image
-            </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:bg-gray-50" onClick={() => document.getElementById('fileInput').click()}>
-              {preview ? (
+          <form onSubmit={handleSubmit}>
+            <div
+              className="mb-4 border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-[#191919] transition-colors"
+              onClick={() => document.getElementById("file-upload").click()}
+            >
+              {previewUrl ? (
                 <div className="relative">
                   <img
-                    src={preview}
+                    src={previewUrl}
                     alt="Banner preview"
-                    className="mx-auto max-h-48 object-contain"
+                    className="max-h-48 mx-auto object-contain rounded"
                   />
                   <button
                     type="button"
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 transform translate-x-1/2 -translate-y-1/2"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setImage(null);
-                      setPreview(null);
+                      setSelectedFile(null);
+                      setPreviewUrl(null);
                     }}
+                    className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
                   >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      ></path>
-                    </svg>
+                    <IoMdClose size={16} />
                   </button>
                 </div>
               ) : (
-                <>
-                  <svg
-                    className="mx-auto h-12 w-12 text-gray-400"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                <div className="py-4">
+                  <MdFileUpload className="mx-auto h-12 w-12 text-gray-400" />
                   <p className="mt-1 text-sm text-gray-500">
-                    Click to upload a banner image
+                    Click to upload or drag and drop
                   </p>
                   <p className="text-xs text-gray-500">
-                    PNG, JPG, GIF up to 5MB
+                    PNG, JPG, GIF up to 10MB
                   </p>
-                </>
+                </div>
               )}
-              <input
-                id="fileInput"
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleImageChange}
-              />
             </div>
-            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-          </div>
 
-          <div className="mb-6">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                checked={isActive}
-                onChange={() => setIsActive(!isActive)}
-                className="form-checkbox h-5 w-5 text-[#06C4D9] bg-[#06C4D9]"
-              />
-              <span className="ml-2 text-gray-700">Set as Active Banner</span>
-            </label>
-          </div>
+            <input
+              id="file-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
 
-          <div className="flex justify-end space-x-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`px-4 py-2 text-sm font-medium text-white bg-[#06C4D9] rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
-            >
-              {loading ? 'Uploading...' : 'Upload Banner'}
-            </button>
-          </div>
-        </form>
+            {error && (
+              <div className="mb-4 text-red-500 text-sm flex items-center gap-1">
+                <MdError size={16} />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                type="button"
+                onClick={handleCloseClick}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                disabled={isUploading}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 text-sm font-medium text-white bg-[#191919] rounded-md hover:bg-gray-800 disabled:bg-gray-400 transition-colors"
+                disabled={isUploading || !selectedFile}
+              >
+                {isUploading ? "Uploading..." : "Add Banner"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
