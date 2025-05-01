@@ -123,8 +123,8 @@ const UserDetailsPage = () => {
           ) : user ? (
             <div className="bg-white shadow-lg rounded-lg p-4 md:p-6 w-full transition-all duration-300 hover:shadow-xl">
               <div className="border-b border-gray-200 pb-3 md:pb-4 mb-6 flex items-center">
-                <div className="bg-blue-100 p-3 rounded-full mr-4">
-                  <FaUserCircle className="text-3xl text-blue-500" />
+                <div className="bg-cyan-100 p-3 rounded-full mr-4">
+                  <FaUserCircle className="text-3xl text-[#06C4D9]" />
                 </div>
                 <div>
                   <h1 className="text-lg sm:text-xl md:text-2xl font-bold">
@@ -138,7 +138,7 @@ const UserDetailsPage = () => {
                 <div className="space-y-4">
                   <div className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
                     <h2 className="text-lg font-semibold mb-3 pb-2 border-b border-gray-200 flex items-center">
-                      <FaUserCircle className="mr-2 text-blue-500" /> Personal Information
+                      <FaUserCircle className="mr-2 text-[#06C4D9]" /> Personal Information
                     </h2>
                     <div className="space-y-2">
                       <InfoItem 
@@ -176,7 +176,7 @@ const UserDetailsPage = () => {
 
                   <div className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
                     <h2 className="text-lg font-semibold mb-3 pb-2 border-b border-gray-200 flex items-center">
-                      <FaIdBadge className="mr-2 text-blue-500" /> Account Status
+                      <FaIdBadge className="mr-2 text-[#06C4D9]" /> Account Status
                     </h2>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between py-2 border-b border-gray-100">
@@ -218,7 +218,7 @@ const UserDetailsPage = () => {
                 <div className="space-y-4">
                   <div className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
                     <h2 className="text-lg font-semibold mb-3 pb-2 border-b border-gray-200 flex items-center">
-                      <FaBell className="mr-2 text-blue-500" /> Preferences
+                      <FaBell className="mr-2 text-[#06C4D9]" /> Preferences
                     </h2>
                     <div className="space-y-2">
                       <InfoItem 
@@ -246,7 +246,7 @@ const UserDetailsPage = () => {
 
                   <div className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
                     <h2 className="text-lg font-semibold mb-3 pb-2 border-b border-gray-200 flex items-center">
-                      <FaClock className="mr-2 text-blue-500" /> System Information
+                      <FaClock className="mr-2 text-[#06C4D9]" /> System Information
                     </h2>
                     <div className="space-y-2">
                       <InfoItem 
