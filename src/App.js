@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Categories from './components/Dash-board/Categories/Categories';
-import LegalPolicy from './components/Dash-board/Legal-policy/LegalPolicy';
 import MainDashboard from './components/Dash-board/Main-dashboard/MainDashboard';
 import Reportes from './components/Dash-board/Reportes/Reportes';
 import Rating from './components/Dash-board/Rating/Rating';
@@ -18,6 +17,8 @@ import SubCategories from './components/Dash-board/Categories/categoryComponents
 import EditCategory from './components/Dash-board/Categories/categoryComponents/EditCategory';
 import Banner from './components/Dash-board/Banner/Banner';
 import CategoryForm from './components/Dash-board/Categories/categoryComponents/CategoryForm';
+import BannerDetail from './components/Dash-board/Banner/BannerDetail';
+import Faq from './components/Dash-board/faq/Faq';
 
 const App = () => {
   return (
@@ -35,8 +36,9 @@ const App = () => {
           <Route path=':categoryId' element={<SubCategories/>}/>
           <Route path='/post-category' element={<CategoryForm/>}/>
           <Route path='/edit-category/:categoryId' element={<EditCategory/>}/>
-          <Route path="/faq" element={<LegalPolicy />} />
+          <Route path="/faq" element={<Faq />} />
           <Route path="/banner" element={<Banner/>} />
+          <Route path='/banner/:id' element={<BannerDetail/>}/>
           <Route path="/main-dashboard" element={<MainDashboard />} />
           <Route path="/reportes" element={<Reportes />} />
           <Route path="/rating" element={<Rating />} />

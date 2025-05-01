@@ -26,20 +26,20 @@ const UserGrowthChart = ({ data }) => {
           >
             <defs>
               <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="blue" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#06C4D9" stopOpacity={0.1} />
-              </linearGradient>
-              <linearGradient id="colorActive" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#191919" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="#191919" stopOpacity={0.1} />
               </linearGradient>
+              <linearGradient id="colorActive" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="blue" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#06C4D9" stopOpacity={0.1} />
+              </linearGradient>
               <linearGradient id="colorVerified" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="white  " stopOpacity={0.8} />
-                <stop offset="95%" stopColor="gray" stopOpacity={0.1} />
+                <stop offset="5%" stopColor="#06C4D9  " stopOpacity={0.8} />
+                <stop offset="95%" stopColor="#06C4D9" stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="colorActiveToday" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#06C4D9" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#06C4D9" stopOpacity={0.1} />
+                <stop offset="5%" stopColor="red" stopOpacity={0.8} />
+                <stop offset="95%" stopColor="red" stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -69,7 +69,7 @@ const UserGrowthChart = ({ data }) => {
               type="monotone" 
               dataKey="users" 
               name="Total Users"
-              stroke="blue" 
+              stroke="#191919" 
               fillOpacity={1} 
               fill="url(#colorUsers)" 
               strokeWidth={2}
@@ -78,7 +78,7 @@ const UserGrowthChart = ({ data }) => {
               type="monotone" 
               dataKey="active" 
               name="Monthly Active Users"
-              stroke="#191919" 
+              stroke="blue" 
               fillOpacity={1} 
               fill="url(#colorActive)" 
               strokeWidth={2}
@@ -87,7 +87,7 @@ const UserGrowthChart = ({ data }) => {
               type="monotone" 
               dataKey="verified" 
               name="Verified Users"
-              stroke="gray" 
+              stroke="#06C4D9" 
               fillOpacity={1} 
               fill="url(#colorVerified)" 
               strokeWidth={2}
@@ -96,7 +96,7 @@ const UserGrowthChart = ({ data }) => {
               type="monotone" 
               dataKey="activeToday" 
               name="Today's Active Users"
-              stroke="#06C4D9" 
+              stroke="red" 
               fillOpacity={1} 
               fill="url(#colorActiveToday)" 
               strokeWidth={2}

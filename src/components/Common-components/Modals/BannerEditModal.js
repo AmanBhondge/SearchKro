@@ -1,283 +1,198 @@
 import React, { useState, useEffect } from "react";
-import { editBanner } from "../../utils/AxiosApi";
+import { postBanner, editBanner } from "../../utils/AxiosApi";
 
-const BannerEditModal = ({ isOpen, onClose, banner, onSuccess }) => {
-  const [formData, setFormData] = useState({
-    isActive: false,
-  });
-  const [imageFile, setImageFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+const BannerEditModal = ({ isOpen, onClose, onSuccess, banner }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
 
   useEffect(() => {
-    if (banner && isOpen) {
-      setFormData({
-        isActive: banner.isActive || false,
-      });
-      
-      if (banner.image) {
-        const imageUrl = banner.image.startsWith('data:') 
-          ? banner.image  
-          : `${banner.image}?t=${new Date().getTime()}`; 
-        
-        setPreviewImage(imageUrl);
-      } else {
-        setPreviewImage("");
-      }
-      
-      setImageFile(null);
-      
-      const fileInput = document.getElementById('editFileInput');
-      if (fileInput) fileInput.value = "";
+    if (banner?.image) {
+      setPreviewUrl(banner.image);
     }
-  }, [banner, isOpen]);
+  }, [banner]);
 
-  const handleChange = (e) => {
-    const { name, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : e.target.value,
-    });
-  };
-
-  const handleImageChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
-    
     if (!file) return;
-    
-    if (!file.type.includes('image/')) {
-      setError('Please select an image file');
+
+    if (!file.type.startsWith("image/")) {
+      setError("Please select an image file");
       return;
     }
-    
-    if (file.size > 5 * 1024 * 1024) {
-      setError('Image size should be less than 5MB');
-      return;
-    }
-    
-    setError('');
-    setImageFile(file);
-    
+
+    setSelectedFile(file);
+    setError("");
+
     const reader = new FileReader();
     reader.onload = () => {
-      setPreviewImage(reader.result);
+      setPreviewUrl(reader.result);
     };
     reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    console.log(previewImage);
-    
-  
-    if (!imageFile && !previewImage) {
-      setError("Please select an image");
-      return;
-    }
-  
+
     try {
-      setIsLoading(true);
-  
-      const payload = new FormData();
-  
-      if (imageFile) {
-        payload.append("image", imageFile);
-      }
-  
-      payload.append("isActive", formData.isActive ? "true" : "false");
-  
-      const response = await editBanner(banner._id, payload);
-      console.log("Banner update response:", response);
-  
-      let updatedBanner;
-      
-      if (response.data?.data) {
-        updatedBanner = response.data.data;
-        
-        if (imageFile) {
-          updatedBanner = {
-            ...updatedBanner,
-            image: previewImage || updatedBanner.image
-          };
+      setIsUploading(true);
+      setError("");
+
+      let imageUrl = banner?.image;
+
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("image", selectedFile);
+        const uploadRes = await postBanner(formData);
+
+        if (
+          !uploadRes.data ||
+          !uploadRes.data.data ||
+          uploadRes.data.data.length === 0
+        ) {
+          throw new Error("Failed to upload image");
         }
+
+        imageUrl = uploadRes.data.data[0];
+      }
+
+      const res = await editBanner(banner._id, { image: imageUrl });
+      
+      if (res.data && res.data.data) {
+        onSuccess(res.data.data);
+        onClose();
+        setSelectedFile(null);
+        setPreviewUrl(null);
       } else {
-        updatedBanner = {
-          ...banner,
-          isActive: formData.isActive
-        };
-        
-        if (imageFile) {
-          updatedBanner.image = previewImage;
-        }
+        setError("Failed to update banner");
       }
-      console.log("Sending updated banner to parent:", updatedBanner);
-      
-      onSuccess(updatedBanner);
-      onClose();
-    } catch (error) {
-      console.error("Error updating banner:", error);
-      setError(error.response?.data?.message || "An error occurred while updating the banner");
+    } catch (err) {
+      console.error("Edit error:", err);
+      setError(err.response?.data?.msg || "An error occurred while updating");
     } finally {
-      setIsLoading(false);
+      setIsUploading(false);
     }
   };
-  
+
+  const triggerFileInput = () => {
+    document.getElementById("file-input").click();
+  };
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-        <div className="flex justify-between items-center p-6 border-b">
-          <h2 className="text-xl font-semibold">Edit Banner</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-500"
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+      <div className="bg-white rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-xl">
+        <div className="p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">Edit Banner</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 transition-colors"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6">
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">
-              {error}
-            </div>
-          )}
-
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Banner ID
-            </label>
-            <input
-              type="text"
-              value={banner ? banner._id : ""}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-gray-100"
-              disabled
-            />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                ></path>
+              </svg>
+            </button>
           </div>
 
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Banner Image
-            </label>
+          <form onSubmit={handleSubmit}>
             <div 
-              className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:bg-gray-50" 
-              onClick={() => document.getElementById('editFileInput').click()}
+              onClick={triggerFileInput}
+              className={`mb-6 border-2 ${previewUrl ? 'border-gray-200' : 'border-dashed border-indigo-300'} 
+                rounded-lg p-6 text-center cursor-pointer transition-all hover:bg-gray-50
+                ${previewUrl ? 'bg-white' : 'bg-indigo-50'}`}
             >
-              {previewImage ? (
-                <div className="relative">
-                  <img
-                    src={previewImage}
-                    alt="Banner preview"
-                    className="mx-auto max-h-48 object-contain"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "https://via.placeholder.com/300x150?text=Invalid+Image";
-                    }}
-                  />
-                  <button
-                    type="button"
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 transform translate-x-1/2 -translate-y-1/2"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setImageFile(null);
-                      setPreviewImage("");
-                    }}
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <svg
-                    className="mx-auto h-12 w-12 text-gray-400"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <p className="mt-1 text-sm text-gray-500">
-                    Click to upload a banner image
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    PNG, JPG, GIF up to 5MB
-                  </p>
-                </>
-              )}
               <input
-                id="editFileInput"
+                id="file-input"
                 type="file"
                 accept="image/*"
+                onChange={handleFileChange}
                 className="hidden"
-                onChange={handleImageChange}
               />
+              
+              {previewUrl ? (
+                <div className="relative group">
+                  <img
+                    src={previewUrl}
+                    alt="Banner preview"
+                    className="max-h-60 mx-auto object-contain rounded-md"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 flex items-center justify-center rounded-md transition-opacity">
+                    <p className="text-white font-medium">Click to change image</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="py-6">
+                  <svg
+                    className="mx-auto h-14 w-14 text-indigo-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                  <p className="mt-3 text-sm text-gray-600 font-medium">
+                    Click to upload or drag and drop
+                  </p>
+                  <p className="mt-1 text-xs text-gray-500">
+                    PNG, JPG or GIF (Recommended size: 1200x400px)
+                  </p>
+                </div>
+              )}
             </div>
-          </div>
 
-          <div className="mb-6 flex items-center">
-            <input
-              type="checkbox"
-              name="isActive"
-              checked={formData.isActive}
-              onChange={handleChange}
-              className="mr-2"
-            />
-            <label className="text-gray-700">Active Banner</label>
-          </div>
+            {error && (
+              <div className="mb-4 text-rose-500 text-sm bg-rose-50 p-3 rounded-md">
+                <span className="font-medium">Error: </span>{error}
+              </div>
+            )}
 
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={onClose}
-              className="mr-2 px-4 py-2 text-sm border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`px-4 py-2 text-sm text-white rounded-md ${
-                isLoading ? "bg-blue-400" : "bg-[#06C4D9]"
-              }`}
-            >
-              {isLoading ? "Updating..." : "Update Banner"}
-            </button>
-          </div>
-        </form>
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                type="button"
+                onClick={onClose}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                disabled={isUploading}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-5 py-2 text-sm font-medium text-white bg-[#06C4D9] rounded-md disabled:bg-indigo-300 transition-colors"
+                disabled={isUploading}
+              >
+                {isUploading ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Updating...
+                  </span>
+                ) : (
+                  "Update Banner"
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

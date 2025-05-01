@@ -9,7 +9,7 @@ import {
   postFaqs,
 } from "../../utils/AxiosApi";
 
-const LegalPolicy = () => {
+const Faq = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -131,7 +131,7 @@ const LegalPolicy = () => {
         <div className="flex mt-0 md:mt-8 justify-between items-center border-b-2 px-4 md:px-8 py-4">
           <div className="flex items-center">
             <h1 className="text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl font-bold ml-9">
-              Legal Policy
+              Frequently Asked Questions
             </h1>
           </div>
           <Navbar />
@@ -343,4 +343,4 @@ const LegalPolicy = () => {
   );
 };
 
-export default LegalPolicy;
+export default Faq;
