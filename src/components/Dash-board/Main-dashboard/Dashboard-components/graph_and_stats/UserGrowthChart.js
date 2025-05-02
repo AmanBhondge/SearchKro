@@ -11,6 +11,8 @@ import {
 } from "recharts";
 
 const UserGrowthChart = ({ data }) => {
+  console.log("chart data:", data);
+  
   if (!data || data.length === 0) {
     return <div>No data available</div>;
   }
@@ -34,7 +36,7 @@ const UserGrowthChart = ({ data }) => {
                 <stop offset="95%" stopColor="#06C4D9" stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="colorVerified" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#06C4D9  " stopOpacity={0.8} />
+                <stop offset="5%" stopColor="#06C4D9" stopOpacity={0.8} />
                 <stop offset="95%" stopColor="#06C4D9" stopOpacity={0.1} />
               </linearGradient>
               <linearGradient id="colorActiveToday" x1="0" y1="0" x2="0" y2="1">
@@ -55,7 +57,7 @@ const UserGrowthChart = ({ data }) => {
               }}
               formatter={(value, name) => {
                 const formattedNames = {
-                  users: "Total Users",
+                  totalUsers: "Total Users",
                   active: "Monthly Active Users",
                   verified: "Verified Users",
                   activeToday: "Today's Active Users"
@@ -67,7 +69,7 @@ const UserGrowthChart = ({ data }) => {
             
             <Area 
               type="monotone" 
-              dataKey="users" 
+              dataKey="totalUsers" 
               name="Total Users"
               stroke="#191919" 
               fillOpacity={1} 
