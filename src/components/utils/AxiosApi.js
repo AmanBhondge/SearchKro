@@ -23,10 +23,10 @@ Api.interceptors.request.use(
 const UploadApi = axios.create({
   baseURL: "https://service.kartikengitech.info/",
   headers: {
-    Authorization: `Bearer ${Cookies.get("Token")}`,
-    Accept: "application/json",
-    "Content-Type": "multipart/form-data",
-  },
+    'Authorization': `Bearer ${Cookies.get("Token")}`,
+    'Accept': 'application/json',
+    'Content-Type': 'multipart/form-data',
+  }
 });
 
 //Authentication end points
@@ -115,9 +115,9 @@ export const deleteCategory = (index) => {
   const encodedIndex = encodeURIComponent(index);
   return Api.delete(`/api/category/deleteCategory?index=${encodedIndex}`);
 };
-export const UploadImg = (formData) => {
+
+export const UploadImg = (formData) => 
   UploadApi.post("/api/user/uploadImage", formData);
-};
 
 //Banner endpoints
 export const getAllBanners = () => {
