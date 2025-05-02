@@ -1,10 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllBanners } from "../../utils/AxiosApi";
 import Sidebar from "../../Common-components/Sidebar/Sidebar";
 import Navbar from "../../Common-components/Navbar/Navbar";
 import BannerEditModal from "../../Common-components/Modals/BannerEditModal";
 import PostBannerModal from "../../Common-components/Modals/PostBannerModal";
+
+
+const BannerCard = memo(({ banner, onEditClick, onClick }) => {
+  const imgSrc = banner.image && !banner.image.startsWith('data:') 
+    ? banner.image.includes('?') 
+      ? banner.image 
+      : `${banner.image}?t=${new Date().getTime()}`
+    : banner.image;
+  
+  return (
+    <div
+      onClick={() => onClick(banner._id)}
+      className="bg-white rounded-lg shadow border overflow-hidden transition-transform duration-300 hover:shadow-lg hover:transform hover:scale-105 cursor-pointer"
+    >
+      <div className="relative aspect-video">
+        <img
+          src={imgSrc}
+          alt={`Banner ${banner._id.slice(-6)}`}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = "https://via.placeholder.com/300x150?text=Image+Not+Found";
+          }}
+        />
+      </div>
+      <div className="p-4">
+        <div className="flex justify-between items-center">
+          <p className="text-sm text-gray-500">ID: {banner._id.slice(-6)}</p>
+          <p className="text-sm text-gray-500">
+            {new Date(banner.createdAt).toLocaleDateString()}
+          </p>
+        </div>
+        <div className="flex justify-between items-center mt-3">
+          <div className="flex items-center">
+            <div className={`w-3 h-3 rounded-full ${banner.isActive ? "bg-[#06C4D9]" : "bg-red-500"}`}></div>
+            <span className="ml-2 text-sm">{banner.isActive ? "Active" : "Inactive"}</span>
+          </div>
+          <button 
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent navigation
+              onEditClick(banner, e);
+            }}
+            className="text-black hover:text-[#191919] text-sm font-semibold transition-colors duration-300"
+          >
+            Edit Banner
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+// For debugging - assign a display name
+BannerCard.displayName = 'BannerCard';
 
 const Banner = () => {
   const navigate = useNavigate();
@@ -32,7 +86,7 @@ const Banner = () => {
   }, []);
 
   const handleEditClick = (banner, e) => {
-    e.stopPropagation(); // Prevent navigation when clicking the edit button
+    e.stopPropagation(); 
     setSelectedBanner(banner);
     setIsEditModalOpen(true);
   };
@@ -142,54 +196,14 @@ const Banner = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {data.map((banner) => {
-                const imgSrc = banner.image && !banner.image.startsWith('data:') 
-                  ? banner.image.includes('?') 
-                    ? banner.image 
-                    : `${banner.image}?t=${new Date().getTime()}`
-                  : banner.image;
-                
-                return (
-                  <div
-                    key={banner._id}
-                    onClick={() => handleCardClick(banner._id)}
-                    className="bg-white rounded-lg shadow border overflow-hidden transition-transform duration-300 hover:shadow-lg hover:transform hover:scale-105 cursor-pointer"
-                  >
-                    <div className="relative aspect-video">
-                      <img
-                        src={imgSrc}
-                        alt={`Banner ${banner._id.slice(-6)}`}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = "https://via.placeholder.com/300x150?text=Image+Not+Found";
-                        }}
-                      />
-                     
-                    </div>
-                    <div className="p-4">
-                      <div className="flex justify-between items-center">
-                        <p className="text-sm text-gray-500">ID: {banner._id.slice(-6)}</p>
-                        <p className="text-sm text-gray-500">
-                          {new Date(banner.createdAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="flex justify-between items-center mt-3">
-                        <div className="flex items-center">
-                          <div className={`w-3 h-3 rounded-full ${banner.isActive ? "bg-[#06C4D9]" : "bg-red-500"}`}></div>
-                          <span className="ml-2 text-sm">{banner.isActive ? "Active" : "Inactive"}</span>
-                        </div>
-                        <button 
-                          onClick={(e) => handleEditClick(banner, e)}
-                          className="text-black hover:text-[#191919] text-sm font-semibold transition-colors duration-300"
-                        >
-                          Edit Banner
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+              {data.map((banner) => (
+                <BannerCard 
+                  key={banner._id} 
+                  banner={banner} 
+                  onEditClick={handleEditClick} 
+                  onClick={handleCardClick}
+                />
+              ))}
             </div>
           )}
         </div>
