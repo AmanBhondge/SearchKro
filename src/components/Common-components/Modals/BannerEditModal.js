@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { postBanner, editBanner } from "../../utils/AxiosApi";
+import { X, Upload, Image, Loader } from "lucide-react";
 
 const BannerEditModal = ({ isOpen, onClose, onSuccess, banner }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState("");
+
+  const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB in bytes
 
   useEffect(() => {
     if (banner?.image) {
@@ -19,6 +22,11 @@ const BannerEditModal = ({ isOpen, onClose, onSuccess, banner }) => {
 
     if (!file.type.startsWith("image/")) {
       setError("Please select an image file");
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setError("File size exceeds 1MB limit. Please choose a smaller image.");
       return;
     }
 
@@ -91,19 +99,7 @@ const BannerEditModal = ({ isOpen, onClose, onSuccess, banner }) => {
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 transition-colors"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
-                ></path>
-              </svg>
+              <X size={24} />
             </button>
           </div>
 
@@ -135,24 +131,18 @@ const BannerEditModal = ({ isOpen, onClose, onSuccess, banner }) => {
                 </div>
               ) : (
                 <div className="py-6">
-                  <svg
-                    className="mx-auto h-14 w-14 text-indigo-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                    ></path>
-                  </svg>
+                  <Image 
+                    className="mx-auto text-indigo-400" 
+                    size={56}
+                  />
                   <p className="mt-3 text-sm text-gray-600 font-medium">
                     Click to upload or drag and drop
                   </p>
                   <p className="mt-1 text-xs text-gray-500">
                     PNG, JPG or GIF (Recommended size: 1200x400px)
+                  </p>
+                  <p className="mt-1 text-xs text-rose-500 font-medium">
+                    Maximum file size: 1MB
                   </p>
                 </div>
               )}
@@ -180,10 +170,7 @@ const BannerEditModal = ({ isOpen, onClose, onSuccess, banner }) => {
               >
                 {isUploading ? (
                   <span className="flex items-center gap-2">
-                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                    <Loader className="animate-spin h-4 w-4 text-white" />
                     Updating...
                   </span>
                 ) : (
