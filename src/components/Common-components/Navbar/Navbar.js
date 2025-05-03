@@ -1,10 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
-import profile from "../../../Assets/Profile.png";
-import notif from "../../../Assets/notif.png";
 import edit from "../../../Assets/Edit@2x.png";
 import logout from "../../../Assets/logoutcurve.png";
 import { FaRegUserCircle } from "react-icons/fa";
-import Notification from "../Pop-ups/Notification";
 import Logout from "../Pop-ups/Logout";
 import { getUserById, updateProfile } from "../../utils/AxiosApi";
 import Cookies from "js-cookie";
@@ -14,26 +11,18 @@ const Navbar = () => {
   const [showLogoutConfirmation, setShowLogoutConfirmation] = useState(false);
   const dropdownRef = useRef(null);
   const profileBtnRef = useRef(null);
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const notificationButtonRef = useRef(null);
   const [userData, setUserData] = useState({ name: "", email: "" });
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState("");
-  const [loading, setLoading] = useState(true);
   const nameInputRef = useRef(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        setLoading(true);
         const userId = Cookies.get("Id");
 
-        if (!userId) {
-          setLoading(false);
-          return;
-        }
-
         const response = await getUserById(userId);
+        console.log("get", response.data)
         if (response && response.data && response.data.data) {
           const name = response.data.data.name || "User";
           const email = response.data.data.email || "user@example.com";
@@ -43,9 +32,7 @@ const Navbar = () => {
         }
       } catch (error) {
         console.error("Failed to fetch user data:", error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchUserData();
@@ -71,7 +58,6 @@ const Navbar = () => {
     };
   }, [isDropdownOpen]);
 
-  // Handle save on click outside for name input
   useEffect(() => {
     if (!isEditing) return;
 
@@ -107,6 +93,7 @@ const Navbar = () => {
 
     try {
       const response = await updateProfile({ name: newName });
+      console.log("check",response)
       if (response && response.data) {
         setUserData({
           ...userData,
@@ -135,14 +122,6 @@ const Navbar = () => {
   const handleLogoutConfirm = () => {
     console.log("User confirmed logout");
     setShowLogoutConfirmation(false);
-  };
-
-  // const toggleNotification = () => {
-  //   setIsNotificationOpen(!isNotificationOpen);
-  // };
-
-  const closeNotification = () => {
-    setIsNotificationOpen(false);
   };
 
   return (
@@ -227,11 +206,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <Notification
-        isOpen={isNotificationOpen}
-        onClose={closeNotification}
-        buttonRef={notificationButtonRef}
-      />
+     
 
       <Logout
         isOpen={showLogoutConfirmation}

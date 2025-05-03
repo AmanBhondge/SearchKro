@@ -19,6 +19,7 @@ import Banner from './components/Dash-board/Banner/Banner';
 import CategoryForm from './components/Dash-board/Categories/categoryComponents/CategoryForm';
 import BannerDetail from './components/Dash-board/Banner/BannerDetail';
 import Faq from './components/Dash-board/faq/Faq';
+import Notification from './components/Dash-board/notificationPage/Notification';
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
           <Route path="/rating" element={<Rating />} />
           <Route path="/user" element={<User />} />
           <Route path="/user/:id" element={<UserDetailsPage />} />
+          <Route path='/notification' element={<Notification/>}/>
         </Route>
       </Routes>
     </div>

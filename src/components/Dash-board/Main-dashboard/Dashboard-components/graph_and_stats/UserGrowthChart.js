@@ -11,7 +11,6 @@ import {
 } from "recharts";
 
 const UserGrowthChart = ({ data }) => {
-  console.log("chart data:", data);
   
   if (!data || data.length === 0) {
     return <div>No data available</div>;

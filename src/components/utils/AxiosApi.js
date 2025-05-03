@@ -143,3 +143,8 @@ export const getBannerbyId = (id) => {
 export const deleteBannerbyId = (id) => {
   return Api.delete(`api/admin/banner/deleteBanner/${id}`);
 };
+
+//notification endpoints
+export const sendAdminNotification = (notificationPayload) => {
+  return Api.post("/api/admin/user/adminSendNotification",notificationPayload)
+};

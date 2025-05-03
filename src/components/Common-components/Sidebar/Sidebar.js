@@ -7,7 +7,7 @@ import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import { CiCircleQuestion } from "react-icons/ci";
 import { FiLogOut } from "react-icons/fi";
 import { CiImageOn } from "react-icons/ci";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward, IoIosNotificationsOutline } from "react-icons/io";
 import Logo from "../../../Assets/Logo.png";
 import Logout from "../Pop-ups/Logout";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -72,6 +72,7 @@ const Sidebar = () => {
     else if (path.includes("faq")) setActive("FAQ's");
     else if (path.includes("banner")) setActive("Banner");
     else if (path.includes("rating")) setActive("Rating");
+    else if (path.includes("notification")) setActive("Notification");
     else setActive("Dashboard");
   }, [location]);
 
@@ -106,6 +107,11 @@ const Sidebar = () => {
       name: "Rating",
       icon: <IoIosStarOutline size={22} />,
       navigate: "/rating",
+    },
+    {
+      name: "Notification",
+      icon: <IoIosNotificationsOutline size={22} />,
+      navigate: "/notification",
     },
   ];
 
