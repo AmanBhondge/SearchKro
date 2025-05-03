@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import Logo from "../../../Assets/Google.png";
 import GroupImage from "../../../Assets/Group.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,7 +12,12 @@ const CreateAccount = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isAcceptTermConditions, setIsAcceptTermConditions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -111,20 +117,34 @@ const CreateAccount = () => {
               required
             />
 
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full 
-                h-12 sm:h-13 md:h-14 lg:h-12 xl:h-12 2xl:h-16 3xl:h-18 
-                p-3 sm:p-4 md:p-4 lg:p-4 xl:p-5 2xl:p-5 3xl:p-6 
-                border border-gray-400 rounded-lg 
-                text-base sm:text-lg md:text-lg lg:text-lg 
-                xl:text-xl 2xl:text-lg 3xl:text-2xl 
-                focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full 
+                  h-12 sm:h-13 md:h-14 lg:h-12 xl:h-12 2xl:h-16 3xl:h-18 
+                  p-3 sm:p-4 md:p-4 lg:p-4 xl:p-5 2xl:p-5 3xl:p-6 
+                  border border-gray-400 rounded-lg 
+                  text-base sm:text-lg md:text-lg lg:text-lg 
+                  xl:text-xl 2xl:text-lg 3xl:text-2xl 
+                  focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 
+                         text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                ) : (
+                  <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                )}
+              </button>
+            </div>
 
             <div className="flex items-start mt-4">
               <div className="flex items-center h-5">
