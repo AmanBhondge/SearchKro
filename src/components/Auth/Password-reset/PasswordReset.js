@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import img2 from "../../../Assets/Reset.png";
 import arrow from "../../../Assets/arrow.png";
 import { resetPassword } from '../../utils/AxiosApi';
+import { Eye, EyeOff } from 'lucide-react'; 
 
 const PasswordReset = () => {
   const location = useLocation();
@@ -12,13 +13,13 @@ const PasswordReset = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
-    // Get email from location state
     if (location.state?.email) {
       setEmail(location.state.email);
     } else {
-      // If no email in state, redirect back
       navigate("/forgot-password");
     }
   }, [location, navigate]);
@@ -39,7 +40,6 @@ const PasswordReset = () => {
     }
 
     try {
-      // Payload exactly as specified in the API documentation
       const payload = {
         email: email,
         newPassword: password
@@ -60,13 +60,20 @@ const PasswordReset = () => {
       }
     } catch (err) {
       console.error("Reset password error:", err);
-      // Display the specific error message from the API if available
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else {
         setError("Error resetting password. Please try again.");
       }
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -79,22 +86,42 @@ const PasswordReset = () => {
             Enter your new password below
           </p>
           <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
-            <input
-              type="password"
-              placeholder="New Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full h-12 sm:h-14 mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full h-12 sm:h-14 mt-4 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+            <div className="w-full relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="New Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full h-12 sm:h-14 mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                onClick={togglePasswordVisibility}
+                tabIndex="-1"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+            <div className="w-full relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full h-12 sm:h-14 mt-4 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                onClick={toggleConfirmPasswordVisibility}
+                tabIndex="-1"
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             <button
               type="submit"
               className="w-full h-14 mt-5 sm:mt-6 bg-[#06C4D9] text-white font-semibold p-3 rounded-lg transition hover:bg-[#05b0c3]"
@@ -127,22 +154,42 @@ const PasswordReset = () => {
                 Enter your new password below
               </p>
               <form onSubmit={handleSubmit} className="w-full max-w-md">
-                <input
-                  type="password"
-                  placeholder="New Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full h-14 mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-                <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full h-14 mt-4 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
+                <div className="w-full relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="New Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full h-14 mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    onClick={togglePasswordVisibility}
+                    tabIndex="-1"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+                <div className="w-full relative">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm Password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="w-full h-14 mt-4 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    onClick={toggleConfirmPasswordVisibility}
+                    tabIndex="-1"
+                  >
+                    {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
                 <button
                   type="submit"
                   className="w-full h-16 mt-6 bg-[#06C4D9] text-white font-semibold p-3 rounded-lg transition hover:bg-[#05b0c3]"

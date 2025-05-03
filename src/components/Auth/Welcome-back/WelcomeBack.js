@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import img from "../../../Assets/Frameok.png";
 import Logo from "../../../Assets/Google.png";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,9 +12,9 @@ const WelcomeBack = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [fcmToken, setFcmToken] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Get FCM token on component mount
   useEffect(() => {
     const fetchFcmToken = async () => {
       try {
@@ -34,7 +35,6 @@ const WelcomeBack = () => {
     setIsLoading(true);
 
     try {
-      // Use the stored FCM token instead of fetching it again
       const requestBody = {
         emailPhone: email,
         password: password,
@@ -64,6 +64,10 @@ const WelcomeBack = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -128,9 +132,9 @@ const WelcomeBack = () => {
               />
             </div>
 
-            <div>
+            <div className="relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 className="w-full 
@@ -141,6 +145,17 @@ const WelcomeBack = () => {
                                     focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 required
               />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5 sm:h-6 sm:w-6" />
+                ) : (
+                  <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
+                )}
+              </button>
             </div>
 
             {errorMessage && (
