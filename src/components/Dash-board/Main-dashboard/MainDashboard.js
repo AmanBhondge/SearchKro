@@ -10,8 +10,8 @@ const MainDashboard = () => {
         <Sidebar />
       </div>
       <div className="flex-1 flex flex-col overflow-hidden bg-[#F4F7FF94] transition-all duration-300">
-        <div className="flex mt-0 md:mt-8 justify-between items-center border-b-2 px-4 md:px-8 py-4">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl 2xl:text-4xl font-bold ml-0 md:ml-9">
+      <div className="flex mt-0 md:mt-8 justify-between items-center border-b-2 px-4 md:px-10 py-4">
+          <h1 className="text-2xl sm:text-2xl lg:text-3xl 2xl:text-4xl font-bold ml-9 ">
             Dashboard
           </h1>
           <Navbar />
